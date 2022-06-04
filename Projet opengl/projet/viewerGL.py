@@ -128,10 +128,12 @@ class ViewerGL:
         if self.objs[0].transformation.translation[1] <= 1.5:
             self.objs[0].transformation.translation += \
             pyrr.matrix33.apply_to_vector(pyrr.matrix33.create_from_eulers(self.objs[0].transformation.rotation_euler), pyrr.Vector3([0, 0.02, 0]))
-        else:
+        else: 
             self.saut_descente()
 
     def saut_descente(self):
         if self.objs[0].transformation.translation[1] >= 1:
             self.objs[0].transformation.translation -= \
             pyrr.matrix33.apply_to_vector(pyrr.matrix33.create_from_eulers(self.objs[0].transformation.rotation_euler), pyrr.Vector3([0, 0.02, 0]))
+        else:
+            self.saut_descente()
