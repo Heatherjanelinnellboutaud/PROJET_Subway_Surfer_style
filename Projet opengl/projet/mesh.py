@@ -80,6 +80,8 @@ class Mesh():
         with open(filename) as f:
             for line in f: 
                 l = line.split()
+                if len(l) == 0:
+                    l = [1]
                 if l[0] == 'v' :
                     v = np.array(l[1:], np.float32)
                     tmpv.append(v)
