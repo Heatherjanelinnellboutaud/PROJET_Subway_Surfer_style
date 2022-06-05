@@ -131,17 +131,21 @@ class ViewerGL:
 
     def saut_montee(self):
         if self.objs[0].transformation.translation[1] <= 1.5:
-            print(self.objs[0].transformation.translation[1])
             self.objs[0].transformation.translation += \
             pyrr.matrix33.apply_to_vector(pyrr.matrix33.create_from_eulers(self.objs[0].transformation.rotation_euler), pyrr.Vector3([0, 0.02, 0]))
         else:
             self.flag = 0
 
     def saut_descente(self):
-        print("ok")
         if self.objs[0].transformation.translation[1] >= 1:
             self.objs[0].transformation.translation -= \
             pyrr.matrix33.apply_to_vector(pyrr.matrix33.create_from_eulers(self.objs[0].transformation.rotation_euler), pyrr.Vector3([0, 0.02, 0]))
         else:
             del self.touch[glfw.KEY_SPACE]
             self.flag = 1
+
+    def mvmt_obstacle(self,vitesse):
+        if self.objs[2].transformation.translation[2] <= 0:
+            self.objs[2].transformation.translation -= \
+            pyrr.matrix33.apply_to_vector(pyrr.matrix33.create_from_eulers(self.objs[0].transformation.rotation_euler), pyrr.Vector3([0, vitesse, 0]))
+        
