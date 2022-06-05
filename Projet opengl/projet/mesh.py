@@ -128,3 +128,5 @@ class Mesh():
         m.vertices = np.array(tmp, np.float32)
         m.faces = np.array(tmpf, np.uint32)
         return m
+
+    

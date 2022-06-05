@@ -32,6 +32,7 @@ class ViewerGL:
 
         self.objs = []
         self.touch = {}
+        self.flag = 1
 
     def run(self):
         # boucle d'affichage
@@ -97,6 +98,7 @@ class ViewerGL:
         GL.glUniformMatrix4fv(loc, 1, GL.GL_FALSE, self.cam.projection)
 
     def update_key(self):
+
         if glfw.KEY_UP in self.touch and self.touch[glfw.KEY_UP] > 0:
             self.objs[0].transformation.translation += \
                 pyrr.matrix33.apply_to_vector(pyrr.matrix33.create_from_eulers(self.objs[0].transformation.rotation_euler), pyrr.Vector3([0, 0, 0.02]))
@@ -116,33 +118,30 @@ class ViewerGL:
             self.cam.transformation.rotation_euler[pyrr.euler.index().yaw] -= 0.1
         if glfw.KEY_L in self.touch and self.touch[glfw.KEY_L] > 0:
             self.cam.transformation.rotation_euler[pyrr.euler.index().yaw] += 0.1
-
-        if glfw.KEY_SPACE in self.touch and self.touch[glfw.KEY_SPACE] > 0:
-            self.saut()
-                
         
         self.cam.transformation.rotation_euler = self.objs[0].transformation.rotation_euler.copy() 
         self.cam.transformation.rotation_euler[pyrr.euler.index().yaw] += np.pi
         self.cam.transformation.rotation_center = self.objs[0].transformation.translation + self.objs[0].transformation.rotation_center
         self.cam.transformation.translation = self.objs[0].transformation.translation + pyrr.Vector3([0, 1, 5])
 
-    def saut(self):
-        i,j = 0,0
-        while i <= 5:
-            self.saut_montee()
-            i+=1
-        if i == 5:
-            while j <= 5:
-                self.saut_descente()
-                j+=1
-
- 
-
+        if glfw.KEY_SPACE in self.touch and self.flag == 1:
+                self.saut_montee()
+        if glfw.KEY_SPACE in self.touch and self.flag == 0:
+            self.saut_descente()
 
     def saut_montee(self):
-        self.objs[0].transformation.translation += \
-        pyrr.matrix33.apply_to_vector(pyrr.matrix33.create_from_eulers(self.objs[0].transformation.rotation_euler), pyrr.Vector3([0, 0.02, 0]))
+        if self.objs[0].transformation.translation[1] <= 1.5:
+            print(self.objs[0].transformation.translation[1])
+            self.objs[0].transformation.translation += \
+            pyrr.matrix33.apply_to_vector(pyrr.matrix33.create_from_eulers(self.objs[0].transformation.rotation_euler), pyrr.Vector3([0, 0.02, 0]))
+        else:
+            self.flag = 0
 
     def saut_descente(self):
-        self.objs[0].transformation.translation -= \
-        pyrr.matrix33.apply_to_vector(pyrr.matrix33.create_from_eulers(self.objs[0].transformation.rotation_euler), pyrr.Vector3([0, 0.02, 0]))
+        print("ok")
+        if self.objs[0].transformation.translation[1] >= 1:
+            self.objs[0].transformation.translation -= \
+            pyrr.matrix33.apply_to_vector(pyrr.matrix33.create_from_eulers(self.objs[0].transformation.rotation_euler), pyrr.Vector3([0, 0.02, 0]))
+        else:
+            del self.touch[glfw.KEY_SPACE]
+            self.flag = 1
