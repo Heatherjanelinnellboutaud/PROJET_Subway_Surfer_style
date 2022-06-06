@@ -17,6 +17,8 @@ def main():
     program3d_id = glutils.create_program_from_file('shader.vert', 'shader.frag')
     programGUI_id = glutils.create_program_from_file('gui.vert', 'gui.frag')
 
+    nombre_objet_cree = 0
+
 # PERSONNAGE --------------------------------------------------
     m = Mesh.load_obj('stegosaurus.obj')
     m.normalize()
@@ -28,6 +30,7 @@ def main():
     texture = glutils.load_texture('stegosaurus.jpg')
     o = Object3D(m.load_to_gpu(), m.get_nb_triangles(), program3d_id, texture, tr)
     viewer.add_object(o)
+    nombre_objet_cree += 1
 
 # PALMIERS ---------------------------------------------------------
     for i in range(5):
@@ -37,11 +40,12 @@ def main():
         tr = Transformation3D()
         tr.translation.x = 2
         tr.translation.y = -np.amin(m.vertices, axis=0)[1] 
-        tr.translation.z = -5
+        tr.translation.z = -5 + 2*nombre_objet_cree 
         tr.rotation_center.z = 0.2
         texture = glutils.load_texture('palmier.jpg')
         o = Object3D(m.load_to_gpu(), m.get_nb_triangles(), program3d_id, texture, tr)
         viewer.add_object(o)
+        nombre_objet_cree += 1
 
 # ROCHER ---------------------------------------------------------
     m = Mesh.load_obj('rocher.obj')    
@@ -54,7 +58,8 @@ def main():
     texture = glutils.load_texture('rocher.jpg')
     o = Object3D(m.load_to_gpu(), m.get_nb_triangles(), program3d_id, texture, tr)
     viewer.add_object(o)
-    #viewer.mvmt_obstacle(0.2)
+    nombre_objet_cree += 1
+    viewer.mvmt_obstacle(0.2,nombre_objet_cree)
 
     """obstacle = ObstacleGL(viewer.window)
     obstacle.set_camera(Camera())
