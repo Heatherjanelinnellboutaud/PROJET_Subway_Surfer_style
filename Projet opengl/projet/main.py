@@ -53,7 +53,7 @@ def main():
     texture = glutils.load_texture('rocher.jpg')
     o = Object3D(m.load_to_gpu(), m.get_nb_triangles(), program3d_id, texture, tr)
     viewer.add_object(o)
-    viewer.mvmt_obstacle(0.02)
+    viewer.mvmt_obstacle(0.2)
 
     """obstacle = ObstacleGL(viewer.window)
     obstacle.set_camera(Camera())

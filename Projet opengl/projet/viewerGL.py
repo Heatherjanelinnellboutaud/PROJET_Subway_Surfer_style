@@ -32,6 +32,7 @@ class ViewerGL:
 
         self.objs = []
         self.touch = {}
+        self.vitesse = 0
         self.flag = 1
 
     def run(self):
@@ -41,6 +42,7 @@ class ViewerGL:
             GL.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT)
 
             self.update_key()
+            self.mvmt_obstacle(self.vitesse)
 
             for obj in self.objs:
                 GL.glUseProgram(obj.program)
@@ -119,10 +121,10 @@ class ViewerGL:
         if glfw.KEY_L in self.touch and self.touch[glfw.KEY_L] > 0:
             self.cam.transformation.rotation_euler[pyrr.euler.index().yaw] += 0.1
         
-        self.cam.transformation.rotation_euler = self.objs[0].transformation.rotation_euler.copy() 
+        """self.cam.transformation.rotation_euler = self.objs[0].transformation.rotation_euler.copy() 
         self.cam.transformation.rotation_euler[pyrr.euler.index().yaw] += np.pi
         self.cam.transformation.rotation_center = self.objs[0].transformation.translation + self.objs[0].transformation.rotation_center
-        self.cam.transformation.translation = self.objs[0].transformation.translation + pyrr.Vector3([0, 1, 5])
+        self.cam.transformation.translation = self.objs[0].transformation.translation + pyrr.Vector3([0, 1, 5])"""
 
         if glfw.KEY_SPACE in self.touch and self.flag == 1:
                 self.saut_montee()
@@ -145,7 +147,7 @@ class ViewerGL:
             self.flag = 1
 
     def mvmt_obstacle(self,vitesse):
-        if self.objs[2].transformation.translation[2] <= 0:
+        self.vitesse = vitesse
+        if self.objs[2].transformation.translation[2] >= -25:
             self.objs[2].transformation.translation -= \
-            pyrr.matrix33.apply_to_vector(pyrr.matrix33.create_from_eulers(self.objs[0].transformation.rotation_euler), pyrr.Vector3([0, vitesse, 0]))
-        
+            pyrr.matrix33.apply_to_vector(pyrr.matrix33.create_from_eulers(self.objs[0].transformation.rotation_euler), pyrr.Vector3([0, 0, vitesse]))
