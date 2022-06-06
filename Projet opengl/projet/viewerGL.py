@@ -33,6 +33,7 @@ class ViewerGL:
         self.objs = []
         self.touch = {}
         self.vitesse = 0
+        self.numero_objet = 0
         self.flag = 1
         self.flag2 = 1
         self.flag3 = 1
@@ -48,7 +49,7 @@ class ViewerGL:
             GL.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT)
 
             self.update_key()
-            #self.mvmt_obstacle(self.vitesse)
+            self.mvmt_obstacle(self.vitesse,self.numero_objet)
 
             for obj in self.objs:
                 GL.glUseProgram(obj.program)
@@ -169,14 +170,14 @@ class ViewerGL:
     def droite(self):
         if self.objs[0].transformation.translation[0] < 0:
             self.objs[0].transformation.translation += \
-            pyrr.matrix33.apply_to_vector(pyrr.matrix33.create_from_eulers(self.objs[0].transformation.rotation_euler), pyrr.Vector3([0.04, 0, 0]))
+            pyrr.matrix33.apply_to_vector(pyrr.matrix33.create_from_eulers(self.objs[0].transformation.rotation_euler), pyrr.Vector3([0.2, 0, 0]))
             self.moving2 = True
         else:
             self.flag2 = 0
         
         if self.objs[0].transformation.translation[0] < 1.5 and self.objs[0].transformation.translation[0] >= 0:
             self.objs[0].transformation.translation += \
-            pyrr.matrix33.apply_to_vector(pyrr.matrix33.create_from_eulers(self.objs[0].transformation.rotation_euler), pyrr.Vector3([0.04, 0, 0]))
+            pyrr.matrix33.apply_to_vector(pyrr.matrix33.create_from_eulers(self.objs[0].transformation.rotation_euler), pyrr.Vector3([0.2, 0, 0]))
             self.moving2 = True
         else:
             self.flag2 = 0
@@ -185,14 +186,14 @@ class ViewerGL:
 
         if self.objs[0].transformation.translation[0] > 0:
             self.objs[0].transformation.translation -= \
-            pyrr.matrix33.apply_to_vector(pyrr.matrix33.create_from_eulers(self.objs[0].transformation.rotation_euler), pyrr.Vector3([0.02, 0, 0]))
+            pyrr.matrix33.apply_to_vector(pyrr.matrix33.create_from_eulers(self.objs[0].transformation.rotation_euler), pyrr.Vector3([0.2, 0, 0]))
             self.moving3 = True
         else:
             self.flag3 = 0
 
         if self.objs[0].transformation.translation[0] > -1.5 and self.objs[0].transformation.translation[0] <= 0:
             self.objs[0].transformation.translation -= \
-            pyrr.matrix33.apply_to_vector(pyrr.matrix33.create_from_eulers(self.objs[0].transformation.rotation_euler), pyrr.Vector3([0.02, 0, 0]))
+            pyrr.matrix33.apply_to_vector(pyrr.matrix33.create_from_eulers(self.objs[0].transformation.rotation_euler), pyrr.Vector3([0.2, 0, 0]))
             self.moving3 = True
         else:
             self.flag3 = 0
@@ -208,9 +209,10 @@ class ViewerGL:
         self.flag3 = 1
         self.moving3 = False
 
-    """def mvmt_obstacle(self,vitesse):
+    def mvmt_obstacle(self,vitesse,numero_objet):
+        
         self.vitesse = vitesse
-        if self.objs[2].transformation.translation[2] >= -25:
-            self.objs[2].transformation.translation -= \
+        self.numero_objet = numero_objet
+        if self.objs[numero_objet-1].transformation.translation[2] >= -25:
+            self.objs[numero_objet-1].transformation.translation -= \
             pyrr.matrix33.apply_to_vector(pyrr.matrix33.create_from_eulers(self.objs[0].transformation.rotation_euler), pyrr.Vector3([0, 0, vitesse]))
-"""
