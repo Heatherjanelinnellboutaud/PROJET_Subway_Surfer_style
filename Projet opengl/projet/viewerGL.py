@@ -34,6 +34,12 @@ class ViewerGL:
         self.touch = {}
         self.vitesse = 0
         self.flag = 1
+        self.flag2 = 1
+        self.flag3 = 1
+        self.moving2 = False
+        self.moving3 = False
+
+        self.position_ciblee = 0
 
     def run(self):
         # boucle d'affichage
@@ -42,7 +48,7 @@ class ViewerGL:
             GL.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT)
 
             self.update_key()
-            self.mvmt_obstacle(self.vitesse)
+            #self.mvmt_obstacle(self.vitesse)
 
             for obj in self.objs:
                 GL.glUseProgram(obj.program)
@@ -103,15 +109,11 @@ class ViewerGL:
 
         if glfw.KEY_UP in self.touch and self.touch[glfw.KEY_UP] > 0:
             self.objs[0].transformation.translation += \
-                pyrr.matrix33.apply_to_vector(pyrr.matrix33.create_from_eulers(self.objs[0].transformation.rotation_euler), pyrr.Vector3([0, 0, 0.02]))
+                pyrr.matrix33.apply_to_vector(pyrr.matrix33.create_from_eulers(self.objs[0].transformation.rotation_euler), pyrr.Vector3([0, 0, 0.1]))
         if glfw.KEY_DOWN in self.touch and self.touch[glfw.KEY_DOWN] > 0:
             self.objs[0].transformation.translation -= \
-                pyrr.matrix33.apply_to_vector(pyrr.matrix33.create_from_eulers(self.objs[0].transformation.rotation_euler), pyrr.Vector3([0, 0, 0.02]))
-        if glfw.KEY_LEFT in self.touch and self.touch[glfw.KEY_LEFT] > 0:
-            self.objs[0].transformation.rotation_euler[pyrr.euler.index().yaw] -= 0.1
-        if glfw.KEY_RIGHT in self.touch and self.touch[glfw.KEY_RIGHT] > 0:
-            self.objs[0].transformation.rotation_euler[pyrr.euler.index().yaw] += 0.1
-
+                pyrr.matrix33.apply_to_vector(pyrr.matrix33.create_from_eulers(self.objs[0].transformation.rotation_euler), pyrr.Vector3([0, 0, 0.1]))
+        
         if glfw.KEY_I in self.touch and self.touch[glfw.KEY_I] > 0:
             self.cam.transformation.rotation_euler[pyrr.euler.index().roll] -= 0.1
         if glfw.KEY_K in self.touch and self.touch[glfw.KEY_K] > 0:
@@ -121,33 +123,94 @@ class ViewerGL:
         if glfw.KEY_L in self.touch and self.touch[glfw.KEY_L] > 0:
             self.cam.transformation.rotation_euler[pyrr.euler.index().yaw] += 0.1
         
-        """self.cam.transformation.rotation_euler = self.objs[0].transformation.rotation_euler.copy() 
+        self.cam.transformation.rotation_euler = self.objs[0].transformation.rotation_euler.copy() 
         self.cam.transformation.rotation_euler[pyrr.euler.index().yaw] += np.pi
         self.cam.transformation.rotation_center = self.objs[0].transformation.translation + self.objs[0].transformation.rotation_center
-        self.cam.transformation.translation = self.objs[0].transformation.translation + pyrr.Vector3([0, 1, 5])"""
+        self.cam.transformation.translation = self.objs[0].transformation.translation + pyrr.Vector3([0, 1, 5])
 
+    
+
+
+# SAUT --------------------------------------------------------
         if glfw.KEY_SPACE in self.touch and self.flag == 1:
                 self.saut_montee()
         if glfw.KEY_SPACE in self.touch and self.flag == 0:
             self.saut_descente()
+# DEPLACEMENT A DROITE ----------------------------------------        
+        if glfw.KEY_RIGHT in self.touch and self.flag2 == 1 and not self.moving3:
+                self.droite()
+        if glfw.KEY_RIGHT in self.touch and self.flag2 == 0:
+            self.arret_droite()
+# DEPLACEMENT A GAUCHE ----------------------------------------        
+        if glfw.KEY_LEFT in self.touch and self.flag3 == 1 and not self.moving2:
+                self.gauche()
+        if glfw.KEY_LEFT in self.touch and self.flag3 == 0:
+            self.arret_gauche()
+
+        
 
     def saut_montee(self):
-        if self.objs[0].transformation.translation[1] <= 1.5:
+        if self.objs[0].transformation.translation[1] <= 3:
+            tmp = (4-self.objs[0].transformation.translation[1])*0.05
             self.objs[0].transformation.translation += \
-            pyrr.matrix33.apply_to_vector(pyrr.matrix33.create_from_eulers(self.objs[0].transformation.rotation_euler), pyrr.Vector3([0, 0.02, 0]))
+            pyrr.matrix33.apply_to_vector(pyrr.matrix33.create_from_eulers(self.objs[0].transformation.rotation_euler), pyrr.Vector3([0, tmp, 0]))
         else:
             self.flag = 0
 
     def saut_descente(self):
         if self.objs[0].transformation.translation[1] >= 1:
+            tmp = ((4-0.8)*0.05)-((self.objs[0].transformation.translation[1]-0.8)*0.05)
             self.objs[0].transformation.translation -= \
-            pyrr.matrix33.apply_to_vector(pyrr.matrix33.create_from_eulers(self.objs[0].transformation.rotation_euler), pyrr.Vector3([0, 0.02, 0]))
+            pyrr.matrix33.apply_to_vector(pyrr.matrix33.create_from_eulers(self.objs[0].transformation.rotation_euler), pyrr.Vector3([0, tmp, 0]))
         else:
             del self.touch[glfw.KEY_SPACE]
             self.flag = 1
 
-    def mvmt_obstacle(self,vitesse):
+    def droite(self):
+        if self.objs[0].transformation.translation[0] < 0:
+            self.objs[0].transformation.translation += \
+            pyrr.matrix33.apply_to_vector(pyrr.matrix33.create_from_eulers(self.objs[0].transformation.rotation_euler), pyrr.Vector3([0.04, 0, 0]))
+            self.moving2 = True
+        else:
+            self.flag2 = 0
+        
+        if self.objs[0].transformation.translation[0] < 1.5 and self.objs[0].transformation.translation[0] >= 0:
+            self.objs[0].transformation.translation += \
+            pyrr.matrix33.apply_to_vector(pyrr.matrix33.create_from_eulers(self.objs[0].transformation.rotation_euler), pyrr.Vector3([0.04, 0, 0]))
+            self.moving2 = True
+        else:
+            self.flag2 = 0
+
+    def gauche(self):
+
+        if self.objs[0].transformation.translation[0] > 0:
+            self.objs[0].transformation.translation -= \
+            pyrr.matrix33.apply_to_vector(pyrr.matrix33.create_from_eulers(self.objs[0].transformation.rotation_euler), pyrr.Vector3([0.02, 0, 0]))
+            self.moving3 = True
+        else:
+            self.flag3 = 0
+
+        if self.objs[0].transformation.translation[0] > -1.5 and self.objs[0].transformation.translation[0] <= 0:
+            self.objs[0].transformation.translation -= \
+            pyrr.matrix33.apply_to_vector(pyrr.matrix33.create_from_eulers(self.objs[0].transformation.rotation_euler), pyrr.Vector3([0.02, 0, 0]))
+            self.moving3 = True
+        else:
+            self.flag3 = 0
+
+    def arret_droite(self):
+        del self.touch[glfw.KEY_RIGHT]
+        self.flag2 = 1
+        self.moving2 = False
+
+
+    def arret_gauche(self):
+        del self.touch[glfw.KEY_LEFT]
+        self.flag3 = 1
+        self.moving3 = False
+
+    """def mvmt_obstacle(self,vitesse):
         self.vitesse = vitesse
         if self.objs[2].transformation.translation[2] >= -25:
             self.objs[2].transformation.translation -= \
             pyrr.matrix33.apply_to_vector(pyrr.matrix33.create_from_eulers(self.objs[0].transformation.rotation_euler), pyrr.Vector3([0, 0, vitesse]))
+"""

@@ -30,17 +30,18 @@ def main():
     viewer.add_object(o)
 
 # PALMIERS ---------------------------------------------------------
-    m = Mesh.load_obj('palmier.obj')    
-    m.normalize()
-    m.apply_matrix(pyrr.matrix44.create_from_scale([2, 2, 2, 1]))
-    tr = Transformation3D()
-    tr.translation.x = 2
-    tr.translation.y = -np.amin(m.vertices, axis=0)[1] 
-    tr.translation.z = -5
-    tr.rotation_center.z = 0.2
-    texture = glutils.load_texture('palmier.jpg')
-    o = Object3D(m.load_to_gpu(), m.get_nb_triangles(), program3d_id, texture, tr)
-    viewer.add_object(o)
+    for i in range(5):
+        m = Mesh.load_obj('palmier.obj')    
+        m.normalize()
+        m.apply_matrix(pyrr.matrix44.create_from_scale([2, 2, 2, 1]))
+        tr = Transformation3D()
+        tr.translation.x = 2
+        tr.translation.y = -np.amin(m.vertices, axis=0)[1] 
+        tr.translation.z = -5
+        tr.rotation_center.z = 0.2
+        texture = glutils.load_texture('palmier.jpg')
+        o = Object3D(m.load_to_gpu(), m.get_nb_triangles(), program3d_id, texture, tr)
+        viewer.add_object(o)
 
 # ROCHER ---------------------------------------------------------
     m = Mesh.load_obj('rocher.obj')    
@@ -53,7 +54,7 @@ def main():
     texture = glutils.load_texture('rocher.jpg')
     o = Object3D(m.load_to_gpu(), m.get_nb_triangles(), program3d_id, texture, tr)
     viewer.add_object(o)
-    viewer.mvmt_obstacle(0.2)
+    #viewer.mvmt_obstacle(0.2)
 
     """obstacle = ObstacleGL(viewer.window)
     obstacle.set_camera(Camera())
