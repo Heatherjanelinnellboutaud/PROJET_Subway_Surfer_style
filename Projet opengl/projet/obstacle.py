@@ -17,11 +17,11 @@ class ObstacleGL:
     def add_object(self, obj):
         self.lst_obj.append(obj)
 
-    def mvmt_obstacle(self,vitesse,numero_objet,objet):
+    def mvmt_obstacle(self,vitesse,objet):
         
         self.vitesse = vitesse
-        if self.lst_obj[numero_objet-1].transformation.translation[2] >= -25:
-            self.lst_obj[numero_objet-1].transformation.translation -= \
+        if self.lst_obj[self.lst_obj.index(objet)].transformation.translation[2] >= -25:
+            self.lst_obj[self.lst_obj.index(objet)].transformation.translation -= \
             pyrr.matrix33.apply_to_vector(pyrr.matrix33.create_from_eulers(self.lst_obj[0].transformation.rotation_euler), pyrr.Vector3([0, 0, vitesse]))
             print(self.lst_obj[numero_objet-1].transformation.translation)
         else:
