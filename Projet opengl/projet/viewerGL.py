@@ -52,7 +52,7 @@ class ViewerGL:
                 if isinstance(obj, Object3D):
                     self.update_camera(obj.program)
                 if isinstance(obj, ObstacleGL):
-                    obj.mvmt_obstacle(0.2)
+                    obj.mvmt_obstacle()
 
                 obj.draw()
 

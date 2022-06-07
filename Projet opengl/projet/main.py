@@ -43,7 +43,7 @@ def main():
         tr = Transformation3D()
         tr.translation.x = 1.6*colonne
         tr.translation.y = -np.amin(p.vertices, axis=0)[1] 
-        tr.translation.z = -5 + 5*nombre_objet_cree 
+        tr.translation.z = -5 + 10*nombre_objet_cree 
         tr.rotation_center.z = 0.2
         texture = glutils.load_texture('palmier.jpg')
         o_p = Object3D(p.load_to_gpu(), p.get_nb_triangles(), program3d_id, texture, tr)
