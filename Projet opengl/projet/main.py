@@ -17,7 +17,7 @@ def main():
     program3d_id = glutils.create_program_from_file('shader.vert', 'shader.frag')
     programGUI_id = glutils.create_program_from_file('gui.vert', 'gui.frag')
 
-    nombre_objet_cree = 0
+    
 
 # PERSONNAGE --------------------------------------------------
     m = Mesh.load_obj('stegosaurus.obj')
@@ -25,14 +25,15 @@ def main():
     m.apply_matrix(pyrr.matrix44.create_from_scale([2, 2, 2, 1]))
     tr = Transformation3D()
     tr.translation.y = -np.amin(m.vertices, axis=0)[1]
-    tr.translation.z = -5
+    tr.translation.z = -25
     tr.rotation_center.z = 0.2
     texture = glutils.load_texture('stegosaurus.jpg')
     o = Object3D(m.load_to_gpu(), m.get_nb_triangles(), program3d_id, texture, tr)
     viewer.add_object(o)
-    nombre_objet_cree += 1
 
 # PALMIERS ---------------------------------------------------------
+    nombre_objet_cree = 0
+    obstacle = ObstacleGL()
     for i in range(5):
         m = Mesh.load_obj('palmier.obj')    
         m.normalize()
@@ -44,11 +45,12 @@ def main():
         tr.rotation_center.z = 0.2
         texture = glutils.load_texture('palmier.jpg')
         o = Object3D(m.load_to_gpu(), m.get_nb_triangles(), program3d_id, texture, tr)
-        viewer.add_object(o)
+        obstacle.add_object(o)
         nombre_objet_cree += 1
 
 # ROCHER ---------------------------------------------------------
-    m = Mesh.load_obj('rocher.obj')    
+
+    """m = Mesh.load_obj('rocher.obj')    
     m.normalize()
     m.apply_matrix(pyrr.matrix44.create_from_scale([1, 1, 1, 1]))
     tr = Transformation3D()
@@ -57,9 +59,10 @@ def main():
     tr.rotation_center.z = 0.2
     texture = glutils.load_texture('rocher.jpg')
     o = Object3D(m.load_to_gpu(), m.get_nb_triangles(), program3d_id, texture, tr)
-    viewer.add_object(o)
+    obstacle.add_object(o)
     nombre_objet_cree += 1
-    viewer.mvmt_obstacle(0.2,nombre_objet_cree)
+    viewer.mvmt_obstacle(0.2,nombre_objet_cree)"""
+
 
     m = Mesh()
     p0, p1, p2, p3 = [-25, 0, -25], [25, 0, -25], [25, 0, 25], [-25, 0, 25]
@@ -89,8 +92,6 @@ def main():
     viewer.add_object(o)
 
     viewer.run()
-
-    #obstacle.run()
 
 
 if __name__ == '__main__':

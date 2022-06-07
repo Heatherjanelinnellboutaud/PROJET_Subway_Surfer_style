@@ -49,7 +49,6 @@ class ViewerGL:
             GL.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT)
 
             self.update_key()
-            self.mvmt_obstacle(self.vitesse,self.numero_objet)
 
             for obj in self.objs:
                 GL.glUseProgram(obj.program)
@@ -208,11 +207,3 @@ class ViewerGL:
         del self.touch[glfw.KEY_LEFT]
         self.flag3 = 1
         self.moving3 = False
-
-    def mvmt_obstacle(self,vitesse,numero_objet):
-        
-        self.vitesse = vitesse
-        self.numero_objet = numero_objet
-        if self.objs[numero_objet-1].transformation.translation[2] >= -25:
-            self.objs[numero_objet-1].transformation.translation -= \
-            pyrr.matrix33.apply_to_vector(pyrr.matrix33.create_from_eulers(self.objs[0].transformation.rotation_euler), pyrr.Vector3([0, 0, vitesse]))
