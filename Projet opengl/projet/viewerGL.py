@@ -5,6 +5,7 @@ import glfw
 import pyrr
 import numpy as np
 from cpe3d import Object3D
+from obstacle import ObstacleGL
 import time
 
 class ViewerGL:
@@ -55,6 +56,8 @@ class ViewerGL:
                 if isinstance(obj, Object3D):
                     self.update_camera(obj.program)
                 obj.draw()
+                if isinstance(obj, ObstacleGL):
+                    obj.mvmt_obstacle(0.2,obj)
 
             # changement de buffer d'affichage pour éviter un effet de scintillement
             glfw.swap_buffers(self.window)
