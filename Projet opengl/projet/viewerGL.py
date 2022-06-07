@@ -47,11 +47,6 @@ class ViewerGL:
             GL.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT)
 
             self.update_key()
-<<<<<<< HEAD
-
-=======
-           # print(self.objs[0].transformation.translation)
->>>>>>> 6d79c76063f8c2a90c03e62fe0273fa43bb65908
             for obj in self.objs:
                 GL.glUseProgram(obj.program)
                 if isinstance(obj, Object3D):
