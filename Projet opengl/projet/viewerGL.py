@@ -53,6 +53,8 @@ class ViewerGL:
                     self.update_camera(obj.program)
                 if isinstance(obj, ObstacleGL):
                     obj.mvmt_obstacle()
+                    obj.collision(self.objs[0])
+
 
                 obj.draw()
 

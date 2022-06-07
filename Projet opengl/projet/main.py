@@ -39,9 +39,9 @@ def main():
         colonne = randint(-1,1)
         p = Mesh.load_obj('palmier.obj')    
         p.normalize()
-        p.apply_matrix(pyrr.matrix44.create_from_scale([3, 3, 3, 1]))
+        p.apply_matrix(pyrr.matrix44.create_from_scale([3, 3, 3, 5]))
         tr = Transformation3D()
-        tr.translation.x = 1.6*colonne
+        tr.translation.x = 1.5*colonne
         tr.translation.y = -np.amin(p.vertices, axis=0)[1] 
         tr.translation.z = -5 + 10*nombre_objet_cree 
         tr.rotation_center.z = 0.2
