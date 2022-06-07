@@ -70,15 +70,18 @@ class ViewerGL:
         if key == glfw.KEY_LEFT and action == glfw.PRESS and self.vad == 0:
             if self.objs[0].transformation.translation[0] < 0:
                 while self.objs[0].transformation.translation[0] < 0:
-                    self.objs[0].transformation.translation[0] += 0.1
-                    print(self.objs[0].transformation.translation[0])
+                    d = self.objs[0].transformation.translation[0] 
+                    d += 0.1
+                    self.objs[0].transformation.translation[0] = round(d,1)
+                    print( self.objs[0].transformation.translation[0])
                     self.vag = 1
                 self.vag = 0
             elif self.objs[0].transformation.translation[0] < 1.5 and self.objs[0].transformation.translation[0] >= 0:
                 while self.objs[0].transformation.translation[0] < 1.5:
-                    self.objs[0].transformation.translation[0] += 0.1
+                    d = self.objs[0].transformation.translation[0] 
+                    d += 0.1
+                    self.objs[0].transformation.translation[0] = round(d,1)
                     print(self.objs[0].transformation.translation[0])
-
                     self.vag = 1
                 self.vag = 0
 
@@ -86,12 +89,16 @@ class ViewerGL:
         if key == glfw.KEY_RIGHT and action == glfw.PRESS and self.vag == 0:
             if self.objs[0].transformation.translation[0] > 0:
                 while self.objs[0].transformation.translation[0] > 0:
-                    self.objs[0].transformation.translation[0] -= 0.1
+                    d = self.objs[0].transformation.translation[0] 
+                    d -= 0.1
+                    self.objs[0].transformation.translation[0] = round(d,1)
                     self.vad = 1
                 self.vad = 0
             elif self.objs[0].transformation.translation[0] > -1.5 and self.objs[0].transformation.translation[0] <= 0:
                 while self.objs[0].transformation.translation[0] > -1.5:
-                    self.objs[0].transformation.translation[0] -= 0.1
+                    d = self.objs[0].transformation.translation[0] 
+                    d -= 0.1
+                    self.objs[0].transformation.translation[0] = round(d,1)
                     self.vad = 1
                 self.vad = 0
         self.touch[key] = action
