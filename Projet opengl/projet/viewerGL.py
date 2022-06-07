@@ -36,10 +36,9 @@ class ViewerGL:
         self.vitesse = 0
         self.numero_objet = 0
         self.flag = 1
-        self.flag2 = 1
-        self.flag3 = 1
-        self.moving2 = False
-        self.moving3 = False
+        
+        self.vad = 0 # va a droite
+        self.vag = 0 # va a gauche
 
         self.position_ciblee = 0
 
@@ -50,7 +49,7 @@ class ViewerGL:
             GL.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT)
 
             self.update_key()
-
+            print(self.objs[0].transformation.translation)
             for obj in self.objs:
                 GL.glUseProgram(obj.program)
                 if isinstance(obj, Object3D):
@@ -68,28 +67,34 @@ class ViewerGL:
         # sortie du programme si appui sur la touche 'échappement'
         if key == glfw.KEY_ESCAPE and action == glfw.PRESS:
             glfw.set_window_should_close(win, glfw.TRUE)
-        self.touch[key] = action
-        # DROITE
-        if key == glfw.KEY_RIGHT and action == glfw.PRESS:
+
+        # GAUCHE
+        if key == glfw.KEY_LEFT and action == glfw.PRESS and self.vad == 0:
             if self.objs[0].transformation.translation[0] < 0:
                 while self.objs[0].transformation.translation[0] < 0:
-                    self.objs[0].transformation.translation += \
-                    pyrr.matrix33.apply_to_vector(pyrr.matrix33.create_from_eulers(self.objs[0].transformation.rotation_euler), pyrr.Vector3([0.2, 0, 0]))
-            if self.objs[0].transformation.translation[0] < 1.5 and self.objs[0].transformation.translation[0] >= 0:
+                    self.objs[0].transformation.translation += pyrr.Vector3([0.1, 0, 0])
+                    self.vag = 1
+                self.vag = 0
+            elif self.objs[0].transformation.translation[0] < 1.5 and self.objs[0].transformation.translation[0] >= 0:
                 while self.objs[0].transformation.translation[0] < 1.5:
-                    self.objs[0].transformation.translation += \
-                    pyrr.matrix33.apply_to_vector(pyrr.matrix33.create_from_eulers(self.objs[0].transformation.rotation_euler), pyrr.Vector3([0.2, 0, 0]))
-    
-        if key == glfw.KEY_LEFT and action == glfw.PRESS:
+                    self.objs[0].transformation.translation += pyrr.Vector3([0.1, 0, 0])
+                    self.vag = 1
+                self.vag = 0
+
+        # DROITE
+        if key == glfw.KEY_RIGHT and action == glfw.PRESS and self.vag == 0:
             if self.objs[0].transformation.translation[0] > 0:
                 while self.objs[0].transformation.translation[0] > 0:
-                    self.objs[0].transformation.translation -= \
-                    pyrr.matrix33.apply_to_vector(pyrr.matrix33.create_from_eulers(self.objs[0].transformation.rotation_euler), pyrr.Vector3([0.2, 0, 0]))
-            if self.objs[0].transformation.translation[0] > -1.5 and self.objs[0].transformation.translation[0] <= 0:
+                    self.objs[0].transformation.translation -= pyrr.Vector3([0.1, 0, 0])
+                    self.vad = 1
+                self.vad = 0
+            elif self.objs[0].transformation.translation[0] > -1.5 and self.objs[0].transformation.translation[0] <= 0:
                 while self.objs[0].transformation.translation[0] > -1.5:
-                    self.objs[0].transformation.translation -= \
-                    pyrr.matrix33.apply_to_vector(pyrr.matrix33.create_from_eulers(self.objs[0].transformation.rotation_euler), pyrr.Vector3([0.2, 0, 0]))
-
+                    self.objs[0].transformation.translation -= pyrr.Vector3([0.1, 0, 0])
+                    self.vad = 1
+                self.vad = 0
+        self.touch[key] = action
+                
     def add_object(self, obj):
         self.objs.append(obj)
 
@@ -140,20 +145,7 @@ class ViewerGL:
                 self.saut_montee()
         if glfw.KEY_SPACE in self.touch and self.flag == 0:
             self.saut_descente()
-            
-# DEPLACEMENT A DROITE ----------------------------------------        
-        """if glfw.KEY_RIGHT in self.touch and self.flag2 == 1 and not self.moving3:
-                self.droite()
-        if glfw.KEY_RIGHT in self.touch and self.flag2 == 0:
-            self.arret_droite()"""
-# DEPLACEMENT A GAUCHE ----------------------------------------        
-        """if glfw.KEY_LEFT in self.touch and self.flag3 == 1 and not self.moving2:
-                self.gauche()
-        if glfw.KEY_LEFT in self.touch and self.flag3 == 0:
-            self.arret_gauche()"""
-
-        
-
+ 
     def saut_montee(self):
         if self.objs[0].transformation.translation[1] <= 3:
             tmp = (4-self.objs[0].transformation.translation[1])*0.05
@@ -170,45 +162,3 @@ class ViewerGL:
         else:
             del self.touch[glfw.KEY_SPACE]
             self.flag = 1
-
-    """def droite(self):
-        if self.objs[0].transformation.translation[0] < 0:
-            self.objs[0].transformation.translation += \
-            pyrr.matrix33.apply_to_vector(pyrr.matrix33.create_from_eulers(self.objs[0].transformation.rotation_euler), pyrr.Vector3([0.2, 0, 0]))
-            self.moving2 = True
-        else:
-            self.flag2 = 0
-        
-        if self.objs[0].transformation.translation[0] < 1.5 and self.objs[0].transformation.translation[0] >= 0:
-            self.objs[0].transformation.translation += \
-            pyrr.matrix33.apply_to_vector(pyrr.matrix33.create_from_eulers(self.objs[0].transformation.rotation_euler), pyrr.Vector3([0.2, 0, 0]))
-            self.moving2 = True
-        else:
-            self.flag2 = 0
-
-    def gauche(self):
-
-        if self.objs[0].transformation.translation[0] > 0:
-            self.objs[0].transformation.translation -= \
-            pyrr.matrix33.apply_to_vector(pyrr.matrix33.create_from_eulers(self.objs[0].transformation.rotation_euler), pyrr.Vector3([0.2, 0, 0]))
-            self.moving3 = True
-        else:
-            self.flag3 = 0
-
-        if self.objs[0].transformation.translation[0] > -1.5 and self.objs[0].transformation.translation[0] <= 0:
-            self.objs[0].transformation.translation -= \
-            pyrr.matrix33.apply_to_vector(pyrr.matrix33.create_from_eulers(self.objs[0].transformation.rotation_euler), pyrr.Vector3([0.2, 0, 0]))
-            self.moving3 = True
-        else:
-            self.flag3 = 0
-
-    def arret_droite(self):
-        del self.touch[glfw.KEY_RIGHT]
-        self.flag2 = 1
-        self.moving2 = False
-
-
-    def arret_gauche(self):
-        del self.touch[glfw.KEY_LEFT]
-        self.flag3 = 1
-        self.moving3 = False"""
