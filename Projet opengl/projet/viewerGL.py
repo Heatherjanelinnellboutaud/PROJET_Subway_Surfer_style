@@ -40,8 +40,6 @@ class ViewerGL:
         self.vad = 0 # va a droite
         self.vag = 0 # va a gauche
 
-        self.position_ciblee = 0
-
     def run(self):
         # boucle d'affichage
         while not glfw.window_should_close(self.window):
