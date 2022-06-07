@@ -16,6 +16,8 @@ class ObstacleGL:
        self.pox = 0
        self.posy = 0
        self.posz = 25
+
+       
     
     def add_object(self, obj):
         self.lst_obj.append(obj)
