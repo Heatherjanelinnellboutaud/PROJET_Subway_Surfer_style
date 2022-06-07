@@ -47,7 +47,7 @@ class ViewerGL:
             GL.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT)
 
             self.update_key()
-            print(self.objs[0].transformation.translation)
+           # print(self.objs[0].transformation.translation)
             for obj in self.objs:
                 GL.glUseProgram(obj.program)
                 if isinstance(obj, Object3D):
@@ -70,12 +70,15 @@ class ViewerGL:
         if key == glfw.KEY_LEFT and action == glfw.PRESS and self.vad == 0:
             if self.objs[0].transformation.translation[0] < 0:
                 while self.objs[0].transformation.translation[0] < 0:
-                    self.objs[0].transformation.translation += pyrr.Vector3([0.1, 0, 0])
+                    self.objs[0].transformation.translation[0] += 0.1
+                    print(self.objs[0].transformation.translation[0])
                     self.vag = 1
                 self.vag = 0
             elif self.objs[0].transformation.translation[0] < 1.5 and self.objs[0].transformation.translation[0] >= 0:
                 while self.objs[0].transformation.translation[0] < 1.5:
-                    self.objs[0].transformation.translation += pyrr.Vector3([0.1, 0, 0])
+                    self.objs[0].transformation.translation[0] += 0.1
+                    print(self.objs[0].transformation.translation[0])
+
                     self.vag = 1
                 self.vag = 0
 
@@ -83,12 +86,12 @@ class ViewerGL:
         if key == glfw.KEY_RIGHT and action == glfw.PRESS and self.vag == 0:
             if self.objs[0].transformation.translation[0] > 0:
                 while self.objs[0].transformation.translation[0] > 0:
-                    self.objs[0].transformation.translation -= pyrr.Vector3([0.1, 0, 0])
+                    self.objs[0].transformation.translation[0] -= 0.1
                     self.vad = 1
                 self.vad = 0
             elif self.objs[0].transformation.translation[0] > -1.5 and self.objs[0].transformation.translation[0] <= 0:
                 while self.objs[0].transformation.translation[0] > -1.5:
-                    self.objs[0].transformation.translation -= pyrr.Vector3([0.1, 0, 0])
+                    self.objs[0].transformation.translation[0] -= 0.1
                     self.vad = 1
                 self.vad = 0
         self.touch[key] = action
