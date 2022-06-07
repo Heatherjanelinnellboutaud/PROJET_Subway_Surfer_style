@@ -47,20 +47,21 @@ class ViewerGL:
             GL.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT)
 
             self.update_key()
-            print(self.objs[0].transformation.translation)
+
             for obj in self.objs:
                 GL.glUseProgram(obj.program)
                 if isinstance(obj, Object3D):
                     self.update_camera(obj.program)
-                obj.draw()
                 if isinstance(obj, ObstacleGL):
-                    obj.mvmt_obstacle(0.2,obj)
+                    obj.mvmt_obstacle(0.2)
+
+                obj.draw()
 
             # changement de buffer d'affichage pour éviter un effet de scintillement
             glfw.swap_buffers(self.window)
             # gestion des évènements
-            glfw.poll_events()
-        
+            glfw.poll_events()        
+
     def key_callback(self, win, key, scancode, action, mods):
         # sortie du programme si appui sur la touche 'échappement'
         if key == glfw.KEY_ESCAPE and action == glfw.PRESS:

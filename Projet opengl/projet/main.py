@@ -1,3 +1,4 @@
+from random import randint
 from viewerGL import ViewerGL
 from obstacle import ObstacleGL
 import glutils
@@ -34,20 +35,22 @@ def main():
 # PALMIERS ---------------------------------------------------------
     nombre_objet_cree = 0
     obstacle = ObstacleGL()
-    for i in range(5):
+    for i in range(8):
+        colonne = randint(-1,1)
         p = Mesh.load_obj('palmier.obj')    
         p.normalize()
         p.apply_matrix(pyrr.matrix44.create_from_scale([3, 3, 3, 1]))
         tr = Transformation3D()
-        tr.translation.x = 2
+        tr.translation.x = 1.6*colonne
         tr.translation.y = -np.amin(p.vertices, axis=0)[1] 
-        tr.translation.z = -5 + 2*nombre_objet_cree 
+        tr.translation.z = -5 + 5*nombre_objet_cree 
         tr.rotation_center.z = 0.2
         texture = glutils.load_texture('palmier.jpg')
         op = Object3D(p.load_to_gpu(), p.get_nb_triangles(), program3d_id, texture, tr)
         obstacle.add_object(op)
         nombre_objet_cree += 1
-        viewer.add_object(op)
+        # viewer.add_object(op)
+    viewer.add_object(obstacle)
 
     
 
