@@ -6,7 +6,8 @@ import pyrr
 import numpy as np
 from cpe3d import Object3D
 from obstacle import ObstacleGL
-import time
+from cpe3d import Text
+import glutils
 
 class ViewerGL:
     def __init__(self):
@@ -31,6 +32,8 @@ class ViewerGL:
         GL.glClearColor(0.5, 0.6, 0.9, 1.0)
         print(f"OpenGL: {GL.glGetString(GL.GL_VERSION).decode('ascii')}")
 
+
+
         self.objs = []
         self.touch = {}
         self.vitesse = 0
@@ -40,12 +43,17 @@ class ViewerGL:
         self.vad = 0 # va a droite
         self.vag = 0 # va a gauche
 
+    """def perte(self):
+            programGUI_id = glutils.create_program_from_file('gui.vert', 'gui.frag')
+            vao = Text.initalize_geometry()
+            texture = glutils.load_texture('fontB.jpg')
+            o = Text('Perdu !!!', np.array([-0.8, 0.3], np.float32), np.array([0.8, 0.8], np.float32), vao, 2, programGUI_id, texture)
+            ViewerGL.add_object(self,o)"""
     def run(self):
         # boucle d'affichage
         while not glfw.window_should_close(self.window):
             # nettoyage de la fenêtre : fond et profondeur
             GL.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT)
-
             self.update_key()
             for obj in self.objs:
                 GL.glUseProgram(obj.program)
@@ -108,6 +116,8 @@ class ViewerGL:
 
     def set_camera(self, cam):
         self.cam = cam
+
+    
 
     def update_camera(self, prog):
         

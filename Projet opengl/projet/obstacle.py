@@ -1,10 +1,12 @@
 import OpenGL.GL as GL
+import viewerGL as viewerGL
 import glfw
 import pyrr
 import numpy as np
 from cpe3d import Object3D, Transformation3D
 import time
 from random import randint
+
 
 class ObstacleGL:
     def __init__(self):
@@ -39,6 +41,7 @@ class ObstacleGL:
 
             distance = (dist_x**2 + dist_z**2)**(1/2)
             if distance <= 1 :
+               # perte()
                 print("perdu sale merde")
 
     def draw(self):
