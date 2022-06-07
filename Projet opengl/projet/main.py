@@ -61,23 +61,6 @@ def main():
     nombre_objet_cree += 1
     viewer.mvmt_obstacle(0.2,nombre_objet_cree)
 
-    """obstacle = ObstacleGL(viewer.window)
-    obstacle.set_camera(Camera())
-    obstacle.cam.transformation.translation.y = 2
-    obstacle.cam.transformation.rotation_center = obstacle.cam.transformation.translation.copy()
-    m = Mesh.load_obj('rocher.obj')    
-    m.normalize()
-    m.apply_matrix(pyrr.matrix44.create_from_scale([1, 1, 1, 1]))
-    tr = Transformation3D()
-    tr.translation.x = 0
-    tr.translation.y = -np.amin(m.vertices, axis=0)[1]
-    tr.translation.z = -5
-    tr.rotation_center.z = 0.2
-    texture = glutils.load_texture('rocher.jpg')
-    o = Object3D(m.load_to_gpu(), m.get_nb_triangles(), program3d_id, texture, tr)
-    obstacle.add_object(o)"""
-
-
     m = Mesh()
     p0, p1, p2, p3 = [-25, 0, -25], [25, 0, -25], [25, 0, 25], [-25, 0, 25]
     n, c = [0, 1, 0], [1, 1, 1]
