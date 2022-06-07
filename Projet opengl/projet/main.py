@@ -49,8 +49,6 @@ def main():
         nombre_objet_cree += 1
         viewer.add_object(op)
 
-        obstacle.mvmt_obstacle(0.2,nombre_objet_cree,op)
-
     
 
 # ROCHER ---------------------------------------------------------
