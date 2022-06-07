@@ -26,12 +26,14 @@ class ObstacleGL:
             if obj.transformation.translation[2] >= -25:
                 obj.transformation.translation -= \
                 pyrr.matrix33.apply_to_vector(pyrr.matrix33.create_from_eulers(self.lst_obj[0].transformation.rotation_euler), pyrr.Vector3([0, 0, vitesse]))
-                print(obj.transformation.translation)
             else:
                 tr = Transformation3D()
                 colonne = randint(-1,1)
                 obj.transformation.translation[2] = 25
+                self.vitesse += 0.1
                 tr.translation.x = 1.6*colonne
+                
+
     def draw(self):
         for o in self.lst_obj:
             o.draw()
