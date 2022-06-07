@@ -20,14 +20,14 @@ def main():
     
 
 # PERSONNAGE --------------------------------------------------
-    m = Mesh.load_obj('stegosaurus.obj')
+    m = Mesh.load_obj('poisson.obj')
     m.normalize()
     m.apply_matrix(pyrr.matrix44.create_from_scale([2, 2, 2, 1]))
     tr = Transformation3D()
     tr.translation.y = -np.amin(m.vertices, axis=0)[1]
     tr.translation.z = -25
     tr.rotation_center.z = 0.2
-    texture = glutils.load_texture('stegosaurus.jpg')
+    texture = glutils.load_texture('poisson.jpg')
     o = Object3D(m.load_to_gpu(), m.get_nb_triangles(), program3d_id, texture, tr)
     viewer.add_object(o)
 
@@ -75,7 +75,7 @@ def main():
     viewer.add_object(o)
 
     m = Mesh()
-    p0, p1, p2, p3 = [-2.5, 0.1, -25], [2.5, 0.1, -25], [2.5, 0.1, 25], [-2.5, 0.1, 25]
+    p0, p1, p2, p3 = [-2.5,0.01, -25], [2.5,0.01, -25], [2.5,0.01, 25], [-2.5,0.01, 25]
     n, c = [0, 1, 0], [1, 1, 1]
     t0, t1, t2, t3 = [0, 0], [1, 0], [1, 1], [0, 1]
     m.vertices = np.array([[p0 + n + c + t0], [p1 + n + c + t1], [p2 + n + c + t2], [p3 + n + c + t3]], np.float32)
