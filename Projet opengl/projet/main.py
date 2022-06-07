@@ -34,7 +34,7 @@ def main():
 
 # PALMIERS ---------------------------------------------------------
     nombre_objet_cree = 0
-    obstacle_p = ObstacleGL()
+    obstacle = ObstacleGL()
     for i in range(8):
         colonne = randint(-1,1)
         p = Mesh.load_obj('palmier.obj')    
@@ -46,29 +46,29 @@ def main():
         tr.translation.z = -5 + 10*nombre_objet_cree 
         tr.rotation_center.z = 0.2
         texture = glutils.load_texture('palmier.jpg')
-        o_p = Object3D(p.load_to_gpu(), p.get_nb_triangles(), program3d_id, texture, tr)
-        obstacle_p.add_object(o_p)
+        op = Object3D(p.load_to_gpu(), p.get_nb_triangles(), program3d_id, texture, tr)
+        obstacle.add_object(op)
         nombre_objet_cree += 1
         # viewer.add_object(op)
-    viewer.add_object(obstacle_p)
+    viewer.add_object(obstacle)
 
     
 
 # ROCHER ---------------------------------------------------------
-    obstacle_r = ObstacleGL()
 
-    r = Mesh.load_obj('rocher.obj')    
-    r.normalize()
-    r.apply_matrix(pyrr.matrix44.create_from_scale([1, 1, 1, 1]))
+    """m = Mesh.load_obj('rocher.obj')    
+    m.normalize()
+    m.apply_matrix(pyrr.matrix44.create_from_scale([1, 1, 1, 1]))
     tr = Transformation3D()
-    tr.translation.y = -np.amin(r.vertices, axis=0)[1]
+    tr.translation.y = -np.amin(m.vertices, axis=0)[1]
     tr.translation.z = 10
     tr.rotation_center.z = 0.2
     texture = glutils.load_texture('rocher.jpg')
-    o_r = Object3D(r.load_to_gpu(), r.get_nb_triangles(), program3d_id, texture, tr)
-    obstacle_r.add_object(o_r)
+    o = Object3D(m.load_to_gpu(), m.get_nb_triangles(), program3d_id, texture, tr)
+    obstacle.add_object(o)
     nombre_objet_cree += 1
-    viewer.add_object(obstacle_r)
+    viewer.mvmt_obstacle(0.2,nombre_objet_cree)"""
+
 
     m = Mesh()
     p0, p1, p2, p3 = [-25, 0, -25], [25, 0, -25], [25, 0, 25], [-25, 0, 25]

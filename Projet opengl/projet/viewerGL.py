@@ -73,7 +73,6 @@ class ViewerGL:
                     d = self.objs[0].transformation.translation[0] 
                     d += 0.1
                     self.objs[0].transformation.translation[0] = round(d,1)
-                    print( self.objs[0].transformation.translation[0])
                     self.vag = 1
                 self.vag = 0
             elif self.objs[0].transformation.translation[0] < 1.5 and self.objs[0].transformation.translation[0] >= 0:
@@ -81,7 +80,6 @@ class ViewerGL:
                     d = self.objs[0].transformation.translation[0] 
                     d += 0.1
                     self.objs[0].transformation.translation[0] = round(d,1)
-                    print(self.objs[0].transformation.translation[0])
                     self.vag = 1
                 self.vag = 0
 
