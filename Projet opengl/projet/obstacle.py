@@ -22,6 +22,7 @@ class ObstacleGL:
         self.lst_obj.append(obj)
         self.program = obj.program
 
+
     def mvmt_obstacle(self):
         for obj in self.lst_obj:
             if obj.transformation.translation[2] > -25:
