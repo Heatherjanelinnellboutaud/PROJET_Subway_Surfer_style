@@ -18,7 +18,7 @@ class ObstacleGL:
 
        self.colonnes_occupee_prem_ligne = []
 
-    def add_object(self, obj):
+    def add_object(self, obj, ligne):
         self.lst_obj.append(obj)
         self.program = obj.program
 

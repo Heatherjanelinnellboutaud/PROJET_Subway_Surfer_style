@@ -64,7 +64,7 @@ def main():
             tr.rotation_center.z = 0.2
             texture = glutils.load_texture('palmier.jpg')
             op = Object3D(p.load_to_gpu(), p.get_nb_triangles(), program3d_id, texture, tr)
-            obstacle.add_object(op)
+            obstacle.add_object(op,nbr_ligne_obstacle)
 
         colonne_caillou = randint(-1,1)
 
@@ -79,7 +79,7 @@ def main():
             tr.rotation_center.z = 0.2
             texture = glutils.load_texture('rocher.jpg')
             o = Object3D(m.load_to_gpu(), m.get_nb_triangles(), program3d_id, texture, tr)
-            obstacle.add_object(o)
+            obstacle.add_object(o,nbr_ligne_obstacle)
 
         nbr_ligne_obstacle += 1
             
