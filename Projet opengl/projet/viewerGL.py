@@ -61,8 +61,9 @@ class ViewerGL:
                     self.update_camera(obj.program)
                 if isinstance(obj, ObstacleGL):
                     obj.mvmt_obstacle()
-                    obj.collision(self.objs[0])
-
+                    collision = obj.collision(self.objs[0])
+                    if collision == True:
+                        self.collision()
 
                 obj.draw()
 
@@ -180,3 +181,7 @@ class ViewerGL:
         else:
             del self.touch[glfw.KEY_SPACE]
             self.flag = 1
+
+    def collision(self):
+        self.objs[0].transformation.translation -= \
+            pyrr.matrix33.apply_to_vector(pyrr.matrix33.create_from_eulers(self.objs[0].transformation.rotation_euler), pyrr.Vector3([0, 0, 0.2]))

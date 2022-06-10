@@ -16,32 +16,31 @@ class ObstacleGL:
        self.vitesse = 0.2
        self.programme = 0
 
-       self.lignes = [[],[],[],[],[]]
-       self.colonnes = [[],[],[],[],[]]
+       self.verrou = [None,time.time()]
+       self.time_reset = 2
 
     def add_object(self, obj, ligne,colonne):
         self.lst_obj.append(obj)
         self.program = obj.program
-        self.lignes[ligne].append(obj)
-        self.colonnes[ligne].append(colonne)
+
 
     def mvmt_obstacle(self):
         for obj in self.lst_obj:
             if obj.transformation.translation[2] > -25:
                 obj.transformation.translation[2] -= self.vitesse
             else:
-                for ligne in self.lignes:#on parcourt les lignes créées
-                    num_ligne = self.lignes.index(ligne)#on récupère l'indice de la ligne
-                    colonne = randint(-1,1)#on génère une colonne aléatoirement
-                    if len(self.colonnes[num_ligne]) == 3:#si la la ligne es tentièrement remplie, on vide les colonnes pour pouvoir les re-remplir
-                        self.colonnes[num_ligne] = []
-                    if obj in ligne: 
-                        while colonne not in self.colonnes[num_ligne]:#tant que la colonne générée est occupée dans la ligne, on régénère une colonne
-                            colonne = randint(-1,1)
-                        self.colonnes[num_ligne].append(colonne)#on ajoute la colonne occupée à la ligne
-                        obj.transformation.translation[2] = 25
-                        self.vitesse += 0.001
-                        obj.transformation.translation[0] = 1.6*colonne
+                self.vitesse += 0.001
+                self.aleatoire(obj)
+                
+
+    def aleatoire(self,obj):
+        colonne = randint(-1,1)
+        while colonne == self.verrou[0] and self.verrou[1] - time.time()<self.time_reset:#temps que la colonne générée est occupée dans la ligne, on régénère une colonne
+                    colonne = randint(-1,1)
+        self.verrou[0] = colonne
+        self.verrou[1] = time.time()
+        obj.transformation.translation[0] = 1.6*colonne
+        obj.transformation.translation[2] = 25
                 
     def collision(self,poisson):
         for palmier in self.lst_obj:
@@ -52,7 +51,7 @@ class ObstacleGL:
             distance = (dist_x**2 + dist_z**2)**(1/2)
             if distance <= 1 :
                # perte()
-                print("perdu")
+                return True
 
     def draw(self):
         for o in self.lst_obj:

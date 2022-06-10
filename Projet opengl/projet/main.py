@@ -53,7 +53,7 @@ def main():
                     colonne.append(deuxieme_colonne)
                     superposition = False
 
-
+        
         for palmier in range(nbr_palm_ligne):
             p = Mesh.load_obj('palmier.obj')    
             p.normalize()
@@ -69,20 +69,21 @@ def main():
             nombre_obj_ligne += 1
         
         colonne_caillou = randint(-1,1)
+        if nombre_obj_ligne == 1:
 
-        if colonne_caillou not in colonne:
-            c = Mesh.load_obj('rocher.obj')    
-            c.normalize()
-            c.apply_matrix(pyrr.matrix44.create_from_scale([1, 1, 1, 1]))
-            tr = Transformation3D()
-            tr.translation.x = 1.5*colonne_caillou
-            tr.translation.y = -np.amin(c.vertices, axis=0)[1]
-            tr.translation.z = 10*(nbr_ligne_obstacle)
-            tr.rotation_center.z = 0.2
-            texture = glutils.load_texture('rocher.jpg')
-            oc = Object3D(c.load_to_gpu(), c.get_nb_triangles(), program3d_id, texture, tr)
-            obstacle.add_object(oc,nbr_ligne_obstacle,colonne_caillou)
-            nombre_obj_ligne += 1
+            if colonne_caillou not in colonne:
+                c = Mesh.load_obj('rocher.obj')    
+                c.normalize()
+                c.apply_matrix(pyrr.matrix44.create_from_scale([1, 1, 1, 1]))
+                tr = Transformation3D()
+                tr.translation.x = 1.5*colonne_caillou
+                tr.translation.y = -np.amin(c.vertices, axis=0)[1]
+                tr.translation.z = 10*(nbr_ligne_obstacle)
+                tr.rotation_center.z = 0.2
+                texture = glutils.load_texture('rocher.jpg')
+                oc = Object3D(c.load_to_gpu(), c.get_nb_triangles(), program3d_id, texture, tr)
+                obstacle.add_object(oc,nbr_ligne_obstacle,colonne_caillou)
+                nombre_obj_ligne += 1
                 
         nbr_ligne_obstacle += 1
             
@@ -91,10 +92,7 @@ def main():
 
     
 
-# ROCHER ---------------------------------------------------------
-
-    
-
+# ROCHER --------------------------------------------------------- 
 
     m = Mesh()
     p0, p1, p2, p3 = [-25, 0, -25], [25, 0, -25], [25, 0, 25], [-25, 0, 25]
