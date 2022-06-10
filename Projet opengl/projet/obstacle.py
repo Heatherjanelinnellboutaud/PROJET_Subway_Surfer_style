@@ -16,24 +16,32 @@ class ObstacleGL:
        self.vitesse = 0.2
        self.programme = 0
 
-       self.colonnes_occupee_prem_ligne = []
+       self.lignes = [[],[],[],[],[]]
+       self.colonnes = [[],[],[],[],[]]
 
-    def add_object(self, obj, ligne):
+    def add_object(self, obj, ligne,colonne):
         self.lst_obj.append(obj)
         self.program = obj.program
-
+        self.lignes[ligne].append(obj)
+        self.colonnes[ligne].append(colonne)
 
     def mvmt_obstacle(self):
         for obj in self.lst_obj:
             if obj.transformation.translation[2] > -25:
                 obj.transformation.translation[2] -= self.vitesse
             else:
-                colonne = randint(-1,1)
-                obj.transformation.translation[2] = 25
-                self.vitesse += 0.001
-                obj.transformation.translation[0] = 1.6*colonne
-                
-                
+                for ligne in self.lignes:#on parcourt les lignes créées
+                    num_ligne = self.lignes.index(ligne)#on récupère l'indice de la ligne
+                    colonne = randint(-1,1)#on génère une colonne aléatoirement
+                    if len(self.colonnes[num_ligne]) == 3:#si la la ligne es tentièrement remplie, on vide les colonnes pour pouvoir les re-remplir
+                        self.colonnes[num_ligne] = []
+                    if obj in ligne: 
+                        while colonne not in self.colonnes[num_ligne]:#tant que la colonne générée est occupée dans la ligne, on régénère une colonne
+                            colonne = randint(-1,1)
+                        self.colonnes[num_ligne].append(colonne)#on ajoute la colonne occupée à la ligne
+                        obj.transformation.translation[2] = 25
+                        self.vitesse += 0.001
+                        obj.transformation.translation[0] = 1.6*colonne
                 
     def collision(self,poisson):
         for palmier in self.lst_obj:
