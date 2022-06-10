@@ -36,6 +36,7 @@ def main():
     nbr_ligne_obstacle = 0
     obstacle = ObstacleGL()
     for i in range(5):
+        nombre_obj_ligne = 0
         colonne = []
         double = randint(0,2)#une chance sur trois de mettre 2 palmiers sur une ligne
         if double != 2:
@@ -64,23 +65,25 @@ def main():
             tr.rotation_center.z = 0.2
             texture = glutils.load_texture('palmier.jpg')
             op = Object3D(p.load_to_gpu(), p.get_nb_triangles(), program3d_id, texture, tr)
-            obstacle.add_object(op,nbr_ligne_obstacle)
-
+            obstacle.add_object(op,nbr_ligne_obstacle,colonne[palmier-1])
+            nombre_obj_ligne += 1
+        
         colonne_caillou = randint(-1,1)
 
         if colonne_caillou not in colonne:
-            m = Mesh.load_obj('rocher.obj')    
-            m.normalize()
-            m.apply_matrix(pyrr.matrix44.create_from_scale([1, 1, 1, 1]))
+            c = Mesh.load_obj('rocher.obj')    
+            c.normalize()
+            c.apply_matrix(pyrr.matrix44.create_from_scale([1, 1, 1, 1]))
             tr = Transformation3D()
             tr.translation.x = 1.5*colonne_caillou
-            tr.translation.y = -np.amin(m.vertices, axis=0)[1]
+            tr.translation.y = -np.amin(c.vertices, axis=0)[1]
             tr.translation.z = 10*(nbr_ligne_obstacle)
             tr.rotation_center.z = 0.2
             texture = glutils.load_texture('rocher.jpg')
-            o = Object3D(m.load_to_gpu(), m.get_nb_triangles(), program3d_id, texture, tr)
-            obstacle.add_object(o,nbr_ligne_obstacle)
-
+            oc = Object3D(c.load_to_gpu(), c.get_nb_triangles(), program3d_id, texture, tr)
+            obstacle.add_object(oc,nbr_ligne_obstacle,colonne_caillou)
+            nombre_obj_ligne += 1
+                
         nbr_ligne_obstacle += 1
             
 
