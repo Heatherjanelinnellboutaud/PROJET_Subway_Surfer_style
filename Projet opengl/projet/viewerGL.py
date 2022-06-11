@@ -208,7 +208,7 @@ class ViewerGL:
                 self.pos = 0
             self.pos_init = self.objs[0].transformation.translation[0]
             del self.touch[glfw.KEY_RIGHT]
- 
+
     def saut_montee(self):
         if self.objs[0].transformation.translation[1] <= 3:
             tmp = (4-self.objs[0].transformation.translation[1])*0.05

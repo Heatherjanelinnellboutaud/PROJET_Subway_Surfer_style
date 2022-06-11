@@ -20,7 +20,7 @@ class ObstacleGL:
        self.verrou = [None,time.time()]
        self.time_reset = 2
 
-    def add_object(self, obj, ligne,colonne):
+    def add_object(self, obj):
         self.lst_obj.append(obj)
         self.program = obj.program
 
