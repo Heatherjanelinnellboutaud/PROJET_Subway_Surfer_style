@@ -123,10 +123,10 @@ def main():
     o = Object3D(m.load_to_gpu(), m.get_nb_triangles(), program3d_id, texture, Transformation3D())
     viewer.add_object(o)
 
-    """vao = Text.initalize_geometry()
+    vao = Text.initalize_geometry()
     texture = glutils.load_texture('fontB.jpg')
     o = Text('PLAY', np.array([-0.05, -0.05], np.float32), np.array([0.05, 0.05], np.float32), vao, 2, programGUI_id, texture)
-    viewer.add_object(o)"""
+    viewer.add_object(o)
 
     viewer.run()
 
