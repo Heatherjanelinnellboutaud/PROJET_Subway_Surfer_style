@@ -40,6 +40,8 @@ class ViewerGL:
         self.numero_objet = 0
         self.flag = 1
         self.vie = 1
+        self.mvmt_gauche = False
+        self.mvmt_droite = False
         
         self.pos = 0
         self.pos_init = 0
@@ -60,6 +62,7 @@ class ViewerGL:
         while not glfw.window_should_close(self.window):
             # nettoyage de la fenêtre : fond et profondeur
             GL.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT)
+            self.perdu()
             if self.vie == 1:
                 self.update_key()
             for obj in self.objs:
@@ -71,14 +74,15 @@ class ViewerGL:
                         self.update_camera(obj.program)
                     if isinstance(obj, ObstacleGL) and self.vie == 1:
                         obj.mvmt_obstacle()
-                        obj.points()
                         collision = obj.collision(self.objs[0])
                         if collision == True:
                             self.collision()
                         if self.objs[0].transformation.translation[2] <= -25:
                             self.objs[1].transformation.translation[0] = self.objs[0].transformation.translation[0]
                             self.objs[1].transformation.translation[2] = self.objs[0].transformation.translation[2]
+                            self.objs.pop(-1)
                             self.vie = 0
+                            
                             
                     obj.draw()
 
@@ -86,6 +90,14 @@ class ViewerGL:
             glfw.swap_buffers(self.window)
             # gestion des évènements
             glfw.poll_events() 
+
+    def perdu(self):
+        if self.vie == 0:
+            programGUI_id = glutils.create_program_from_file('gui.vert', 'gui.frag')
+            vao = Text.initalize_geometry()
+            texture = glutils.load_texture('fontB.jpg')
+            o = Text('Perdu', np.array([0.1, -0.1], np.float32), np.array([0.2, 0.1], np.float32), vao, 2, programGUI_id, texture)
+            o.draw()
 
     def collision(self):
            self.objs[1].transformation.translation[2] += \
@@ -184,14 +196,15 @@ class ViewerGL:
         if glfw.KEY_SPACE in self.touch and self.flag == 0:
             self.saut_descente()
 # Gauche --------------------------------------------------------
-        if glfw.KEY_LEFT in self.touch and self.pos != -1:
+        if glfw.KEY_LEFT in self.touch and self.pos != -1 and self.mvmt_droite == False:
             self.gauche()
 # Gauche --------------------------------------------------------
-        if glfw.KEY_RIGHT in self.touch and self.pos != 1:
+        if glfw.KEY_RIGHT in self.touch and self.pos != 1 and self.mvmt_gauche == False:
             self.droite()
 
     def gauche(self):
         if abs(self.pos_init-self.objs[0].transformation.translation[0])<1.6:
+            self.mvmt_gauche = True
             self.objs[0].transformation.translation += \
             pyrr.matrix33.apply_to_vector(pyrr.matrix33.create_from_eulers(self.objs[0].transformation.rotation_euler), pyrr.Vector3([0.1, 0, 0]))
         else:
@@ -200,10 +213,12 @@ class ViewerGL:
             else:
                 self.pos = 0
             self.pos_init = self.objs[0].transformation.translation[0]
+            self.mvmt_gauche = False
             del self.touch[glfw.KEY_LEFT]
 
     def droite(self):
         if abs(self.pos_init-self.objs[0].transformation.translation[0])<1.6:
+            self.mvmt_droite = True
             self.objs[0].transformation.translation -= \
             pyrr.matrix33.apply_to_vector(pyrr.matrix33.create_from_eulers(self.objs[0].transformation.rotation_euler), pyrr.Vector3([0.1, 0, 0]))
         else:
@@ -212,6 +227,7 @@ class ViewerGL:
             else:
                 self.pos = 0
             self.pos_init = self.objs[0].transformation.translation[0]
+            self.mvmt_droite = False
             del self.touch[glfw.KEY_RIGHT]
  
     def saut_montee(self):

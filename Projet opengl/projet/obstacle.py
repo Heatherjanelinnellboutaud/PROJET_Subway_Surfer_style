@@ -19,7 +19,10 @@ class ObstacleGL:
 
         self.verrou = [None,time.time()]
         self.time_reset = 2
-        self.tmp_init = time.time()
+        self.tmp = time.time()
+        self.init_time = True
+
+        self.start_point = True
 
     def add_object(self, obj):
         self.lst_obj.append(obj)
@@ -36,12 +39,20 @@ class ObstacleGL:
 
 
     def mvmt_obstacle(self):
+        if self.init_time == False:
+            self.points()
+
         for obj in self.lst_obj:
             if obj.transformation.translation[2] > -25:
                 obj.transformation.translation[2] -= self.vitesse
             else:
+                self.start_point = True
                 self.vitesse += 0.001
                 self.aleatoire(obj)
+                if self.init_time == True:
+                    self.tmp = time.time()
+                    self.init_time = False
+
                 
 
     def aleatoire(self,obj):
@@ -61,7 +72,6 @@ class ObstacleGL:
 
                 distance = (dist_x**2 + dist_z**2)**(1/2)
                 if distance <= 1 :
-                    self.perdu()
                     return True
             if obstacle.typ == "caillou":
                 dist_x = poisson.transformation.translation[0] - obstacle.transformation.translation[0]
@@ -69,19 +79,11 @@ class ObstacleGL:
                 dist_z = poisson.transformation.translation[2] - obstacle.transformation.translation[2]
                 distance = (dist_x**2 + dist_y**2 + dist_z**2)**(1/2)
                 if distance <= 1 :
-                    print("perdu caillou")
-                    self.perdu()
                     return True
-    def perdu(self):
-        programGUI_id = glutils.create_program_from_file('gui.vert', 'gui.frag')
-        vao = Text.initalize_geometry()
-        texture = glutils.load_texture('fontB.jpg')
-        o = Text('Perdu', np.array([-0.05, -0.05], np.float32), np.array([0.05, 0.05], np.float32), vao, 2, programGUI_id, texture)
-        o.draw()
+    
 
     def points(self):
-        tmp = time.time() - self.tmp_init 
-        print(tmp)
+        tmp = time.time() - self.tmp 
         programGUI_id = glutils.create_program_from_file('gui.vert', 'gui.frag')
         vao = Text.initalize_geometry()
         texture = glutils.load_texture('fontB.jpg')
