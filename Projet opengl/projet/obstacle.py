@@ -54,7 +54,7 @@ class ObstacleGL:
                 programGUI_id = glutils.create_program_from_file('gui.vert', 'gui.frag')
                 vao = Text.initalize_geometry()
                 texture = glutils.load_texture('fontB.jpg')
-                o = Text('PERDU !!!', np.array([-0.8, 0.3], np.float32), np.array([0.8, 0.8], np.float32), vao, 2, programGUI_id, texture)
+                o = Text('Perdu !!!', np.array([-0.9, 0.3], np.float32), np.array([0.9, 0.9], np.float32), vao, 2, programGUI_id, texture)
                 o.draw()
                 return True
 
