@@ -84,7 +84,11 @@ class ViewerGL:
             # changement de buffer d'affichage pour éviter un effet de scintillement
             glfw.swap_buffers(self.window)
             # gestion des évènements
-            glfw.poll_events()        
+            glfw.poll_events() 
+
+    def collision(self):
+           self.objs[1].transformation.translation[2] += \
+        pyrr.matrix33.apply_to_vector(pyrr.matrix33.create_from_eulers(self.objs[0].transformation.rotation_euler), pyrr.Vector3([0, 0, 0.2]))
 
     def key_callback(self, win, key, scancode, action, mods):
         # sortie du programme si appui sur la touche 'échappement'

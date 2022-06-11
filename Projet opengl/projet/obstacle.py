@@ -17,20 +17,23 @@ class ObstacleGL:
        self.lst_obj = []
        self.numero_objet = 0
        self.vitesse = 0.2
-       self.programme = 0
+       self.program = 0
 
        self.verrou = [None,time.time()]
        self.time_reset = 2
 
     def add_object(self, obj,type):
-        if type == "p":
+        self.lst_obj.append(obj)
+        self.program = obj.program
+
+        """if type == "p":
             self.lst_obj.append(obj)
             self.lst_palmier.append(obj)
             self.program = obj.program
         if type == "c":
             self.lst_obj.append(obj)
             self.lst_caillou.append(obj)
-            self.program = obj.program
+            self.program = obj.program"""
 
 
     def mvmt_obstacle(self):
