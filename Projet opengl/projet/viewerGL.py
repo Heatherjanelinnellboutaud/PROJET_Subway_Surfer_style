@@ -42,6 +42,9 @@ class ViewerGL:
         self.flag = 1
         self.vie = 1
         
+        self.pos = 0
+        self.pos_init = 0
+
         self.vad = 0 # va a droite
         self.vag = 0 # va a gauche
 
@@ -88,7 +91,7 @@ class ViewerGL:
         if key == glfw.KEY_ESCAPE and action == glfw.PRESS:
             glfw.set_window_should_close(win, glfw.TRUE)
 
-        # GAUCHE
+        """# GAUCHE
         if key == glfw.KEY_LEFT and action == glfw.PRESS and self.vad == 0:
             if self.objs[0].transformation.translation[0] < 0:
                 while self.objs[0].transformation.translation[0] < 0:
@@ -120,7 +123,7 @@ class ViewerGL:
                     d -= 0.1
                     self.objs[0].transformation.translation[0] = round(d,1)
                     self.vad = 1
-                self.vad = 0
+                self.vad = 0"""
         self.touch[key] = action
                 
     def add_object(self, obj):
@@ -175,6 +178,36 @@ class ViewerGL:
                 self.saut_montee()
         if glfw.KEY_SPACE in self.touch and self.flag == 0:
             self.saut_descente()
+# Gauche --------------------------------------------------------
+        if glfw.KEY_LEFT in self.touch and self.pos != -1:
+            self.gauche()
+# Gauche --------------------------------------------------------
+        if glfw.KEY_RIGHT in self.touch and self.pos != 1:
+            self.droite()
+
+    def gauche(self):
+        if abs(self.pos_init-self.objs[0].transformation.translation[0])<1.6:
+            self.objs[0].transformation.translation += \
+            pyrr.matrix33.apply_to_vector(pyrr.matrix33.create_from_eulers(self.objs[0].transformation.rotation_euler), pyrr.Vector3([0.1, 0, 0]))
+        else:
+            if self.pos == 0:
+                self.pos = -1
+            else:
+                self.pos = 0
+            self.pos_init = self.objs[0].transformation.translation[0]
+            del self.touch[glfw.KEY_LEFT]
+
+    def droite(self):
+        if abs(self.pos_init-self.objs[0].transformation.translation[0])<1.6:
+            self.objs[0].transformation.translation -= \
+            pyrr.matrix33.apply_to_vector(pyrr.matrix33.create_from_eulers(self.objs[0].transformation.rotation_euler), pyrr.Vector3([0.1, 0, 0]))
+        else:
+            if self.pos == 0:
+                self.pos = 1
+            else:
+                self.pos = 0
+            self.pos_init = self.objs[0].transformation.translation[0]
+            del self.touch[glfw.KEY_RIGHT]
  
     def saut_montee(self):
         if self.objs[0].transformation.translation[1] <= 3:
