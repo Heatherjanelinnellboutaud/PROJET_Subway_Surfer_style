@@ -46,7 +46,7 @@ def main():
 # PALMIERS ---------------------------------------------------------
     nbr_ligne_obstacle = 0
     obstacle = ObstacleGL()
-    for i in range(2):
+    for i in range(5):
         nombre_obj_ligne = 0
         colonne = []
         double = randint(0,2)#une chance sur trois de mettre 2 palmiers sur une ligne
@@ -123,7 +123,7 @@ def main():
 
     vao = Text.initalize_geometry()
     texture = glutils.load_texture('fontB.jpg')
-    o = Text('PLAY', np.array([-0.1, 0.2], np.float32), np.array([0.1, 0.5], np.float32), vao, 2, programGUI_id, texture)
+    o = Text('PLAY', np.array([0.6, 0.9], np.float32), np.array([0.7, 1], np.float32), vao, 2, programGUI_id, texture)
     viewer.add_object(o)
 
     viewer.run()
