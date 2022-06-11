@@ -124,7 +124,7 @@ def main():
 
     vao = Text.initalize_geometry()
     texture = glutils.load_texture('fontB.jpg')
-    o = Text('PLAY', np.array([-0.05, -0.05], np.float32), np.array([0.05, 0.05], np.float32), vao, 2, programGUI_id, texture)
+    o = Text('PLAY', np.array([-0.1, 0.2], np.float32), np.array([0.1, 0.5], np.float32), vao, 2, programGUI_id, texture)
     viewer.add_object(o)
 
     viewer.run()

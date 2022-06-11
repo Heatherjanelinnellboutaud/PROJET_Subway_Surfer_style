@@ -62,7 +62,8 @@ class ViewerGL:
         while not glfw.window_should_close(self.window):
             # nettoyage de la fenêtre : fond et profondeur
             GL.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT)
-            self.update_key()
+            if self.vie == 1:
+                self.update_key()
             for obj in self.objs:
                 if self.objs.index(obj) != 1:
                     if self.vie == 0:
@@ -70,7 +71,7 @@ class ViewerGL:
                     GL.glUseProgram(obj.program)
                     if isinstance(obj, Object3D):
                         self.update_camera(obj.program)
-                    if isinstance(obj, ObstacleGL):
+                    if isinstance(obj, ObstacleGL) and self.vie == 1:
                         obj.mvmt_obstacle()
                         collision = obj.collision(self.objs[0])
                         if collision == True:
