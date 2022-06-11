@@ -96,7 +96,7 @@ class Text(Object):
 
     @staticmethod
     def initalize_geometry():
-        p0, p1, p2, p3 = [-1, -1, 0], [-1, 1, 0], [1, 1, 0], [1, -1, 0]
+        p0, p1, p2, p3 = [0, 0, 0], [0, 1, 0], [1, 1, 0], [1, 0, 0]
         geometrie = np.array([p0+p1+p2+p3], np.float32)
         index = np.array([[0, 1, 2]+[0, 2, 3]], np.uint32)
         vao = GL.glGenVertexArrays(1)
