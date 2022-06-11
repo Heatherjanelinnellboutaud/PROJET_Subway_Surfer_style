@@ -22,7 +22,7 @@ class ObstacleGL:
        self.verrou = [None,time.time()]
        self.time_reset = 2
 
-    def add_object(self, obj):
+    def add_object(self, obj,type):
         if type == "p":
             self.lst_obj.append(obj)
             self.lst_palmier.append(obj)
