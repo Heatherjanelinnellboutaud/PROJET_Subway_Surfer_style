@@ -12,6 +12,8 @@ import glutils
 class ObstacleGL:
     def __init__(self):
 
+       self.lst_palmier = []
+       self.lst_caillou = []
        self.lst_obj = []
        self.numero_objet = 0
        self.vitesse = 0.2
@@ -20,9 +22,15 @@ class ObstacleGL:
        self.verrou = [None,time.time()]
        self.time_reset = 2
 
-    def add_object(self, obj, ligne,colonne):
-        self.lst_obj.append(obj)
-        self.program = obj.program
+    def add_object(self, obj, ligne,colonne,type):
+        if type == "p":
+            self.lst_obj.append(obj)
+            self.lst_palmier.append(obj)
+            self.program = obj.program
+        if type == "c":
+            self.lst_obj.append(obj)
+            self.lst_caillou.append(obj)
+            self.program = obj.program
 
 
     def mvmt_obstacle(self):
@@ -44,12 +52,23 @@ class ObstacleGL:
         obj.transformation.translation[2] = 25
                 
     def collision(self,poisson):
-        for palmier in self.lst_obj:
+        for palmier in self.lst_palmier:
             dist_x = poisson.transformation.translation[0] - palmier.transformation.translation[0]
-            #dist_y = poisson.transformation.translation[1] - palmier.transformation.translation[1] + 2.5
             dist_z = poisson.transformation.translation[2] - palmier.transformation.translation[2]
 
             distance = (dist_x**2 + dist_z**2)**(1/2)
+            if distance <= 1 :
+                programGUI_id = glutils.create_program_from_file('gui.vert', 'gui.frag')
+                vao = Text.initalize_geometry()
+                texture = glutils.load_texture('fontB.jpg')
+                o = Text('Perdu !!!', np.array([-0.9, 0.3], np.float32), np.array([0.9, 0.9], np.float32), vao, 2, programGUI_id, texture)
+                o.draw()
+                return True
+        for caillou in self.lst_caillou:
+            dist_x = poisson.transformation.translation[0] - caillou.transformation.translation[0]
+            dist_y = poisson.transformation.translation[1] - caillou.transformation.translation[1] + 2.5
+            dist_z = poisson.transformation.translation[2] - caillou.transformation.translation[2]
+            distance = (dist_x**2 + dist_y**2 + dist_z**2)**(1/2)
             if distance <= 1 :
                 programGUI_id = glutils.create_program_from_file('gui.vert', 'gui.frag')
                 vao = Text.initalize_geometry()
