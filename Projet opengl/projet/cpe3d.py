@@ -91,12 +91,12 @@ class Text(Object):
                 print("Pas de variable uniforme : c")
             GL.glUniform1i(loc, np.array(ord(c), np.int32))
 
-            GL.glDrawElements(GL.GL_TRIANGLES, 3*2, GL.GL_UNSIGNED_INT, None)
+            GL.glDrawElements(GL.GL_TRIANGLES, 6, GL.GL_UNSIGNED_INT, None)
         GL.glEnable(GL.GL_DEPTH_TEST)
 
     @staticmethod
     def initalize_geometry():
-        p0, p1, p2, p3 = [0, 0, 0], [0, 1, 0], [1, 1, 0], [1, 0, 0]
+        p0, p1, p2, p3 = [-1, -1, 0], [-1, 1, 0], [1, 1, 0], [1, -1, 0]
         geometrie = np.array([p0+p1+p2+p3], np.float32)
         index = np.array([[0, 1, 2]+[0, 2, 3]], np.uint32)
         vao = GL.glGenVertexArrays(1)

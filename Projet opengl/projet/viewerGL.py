@@ -4,10 +4,11 @@ import OpenGL.GL as GL
 import glfw
 import pyrr
 import numpy as np
-from cpe3d import Object3D
 from obstacle import ObstacleGL
-from cpe3d import Text
 import glutils
+from random import randint
+from mesh import Mesh
+from cpe3d import Object3D, Camera, Transformation3D, Text
 
 class ViewerGL:
     def __init__(self):
@@ -39,6 +40,7 @@ class ViewerGL:
         self.vitesse = 0
         self.numero_objet = 0
         self.flag = 1
+        self.vie = 1
         
         self.vad = 0 # va a droite
         self.vag = 0 # va a gauche
@@ -50,22 +52,31 @@ class ViewerGL:
             o = Text('Perdu !!!', np.array([-0.8, 0.3], np.float32), np.array([0.8, 0.8], np.float32), vao, 2, programGUI_id, texture)
             ViewerGL.add_object(self,o)"""
     def run(self):
+        
+        program3d_id = glutils.create_program_from_file('shader.vert', 'shader.frag')
+
         # boucle d'affichage
         while not glfw.window_should_close(self.window):
             # nettoyage de la fenêtre : fond et profondeur
             GL.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT)
             self.update_key()
             for obj in self.objs:
-                GL.glUseProgram(obj.program)
-                if isinstance(obj, Object3D):
-                    self.update_camera(obj.program)
-                if isinstance(obj, ObstacleGL):
-                    obj.mvmt_obstacle()
-                    collision = obj.collision(self.objs[0])
-                    if collision == True:
-                        self.collision()
-
-                obj.draw()
+                if self.objs.index(obj) != 1:
+                    if self.vie == 0:
+                        self.objs[0] = self.objs[1]
+                    GL.glUseProgram(obj.program)
+                    if isinstance(obj, Object3D):
+                        self.update_camera(obj.program)
+                    if isinstance(obj, ObstacleGL):
+                        obj.mvmt_obstacle()
+                        collision = obj.collision(self.objs[0])
+                        if collision == True:
+                            self.collision()
+                        if self.objs[0].transformation.translation[2] <= -25:
+                            self.objs[1].transformation.translation[0] = self.objs[0].transformation.translation[0]
+                            self.objs[1].transformation.translation[2] = self.objs[0].transformation.translation[2]
+                            self.vie = 0
+                    obj.draw()
 
             # changement de buffer d'affichage pour éviter un effet de scintillement
             glfw.swap_buffers(self.window)
@@ -158,7 +169,7 @@ class ViewerGL:
         self.cam.transformation.rotation_euler[pyrr.euler.index().yaw] += np.pi
         self.cam.transformation.rotation_center = self.objs[0].transformation.translation + self.objs[0].transformation.rotation_center
         self.cam.transformation.translation = self.objs[0].transformation.translation + pyrr.Vector3([0, 1, 5])
-
+            
 # SAUT --------------------------------------------------------
         if glfw.KEY_SPACE in self.touch and self.flag == 1:
                 self.saut_montee()
