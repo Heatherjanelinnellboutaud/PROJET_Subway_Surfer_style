@@ -24,10 +24,10 @@ class Object:
             GL.glDrawElements(GL.GL_TRIANGLES, 3*self.nb_triangle, GL.GL_UNSIGNED_INT, None)
 
 class Object3D(Object):
-    def __init__(self, vao, nb_triangle, program, texture, transformation):
+    def __init__(self, vao, nb_triangle, program, texture, transformation, type = None):
         super().__init__(vao, nb_triangle, program, texture)
         self.transformation = transformation
-
+        self.typ = type
     def draw(self):
         GL.glUseProgram(self.program)
 
