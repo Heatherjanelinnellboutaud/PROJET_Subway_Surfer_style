@@ -60,13 +60,7 @@ class ObstacleGL:
 
                 distance = (dist_x**2 + dist_z**2)**(1/2)
                 if distance <= 1 :
-                    print("perdu palmier")
-                    
-                    programGUI_id = glutils.create_program_from_file('gui.vert', 'gui.frag')
-                    vao = Text.initalize_geometry()
-                    texture = glutils.load_texture('fontB.jpg')
-                    o = Text('Perdu', np.array([-0.05, -0.05], np.float32), np.array([0.05, 0.05], np.float32), vao, 2, programGUI_id, texture)
-                    o.draw()
+                    self.perdu()
                     return True
             if obstacle.typ == "caillou":
                 dist_x = poisson.transformation.translation[0] - obstacle.transformation.translation[0]
@@ -75,8 +69,15 @@ class ObstacleGL:
                 distance = (dist_x**2 + dist_y**2 + dist_z**2)**(1/2)
                 if distance <= 1 :
                     print("perdu caillou")
+                    self.perdu()
                     return True
-
+    def perdu(self):
+        programGUI_id = glutils.create_program_from_file('gui.vert', 'gui.frag')
+        vao = Text.initalize_geometry()
+        texture = glutils.load_texture('fontB.jpg')
+        o = Text('Perdu', np.array([-0.05, -0.05], np.float32), np.array([0.05, 0.05], np.float32), vao, 2, programGUI_id, texture)
+        o.draw()
+        
     def draw(self):
         for o in self.lst_obj:
             o.draw()
