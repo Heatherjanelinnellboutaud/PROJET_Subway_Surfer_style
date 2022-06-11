@@ -5,7 +5,7 @@ import glfw
 import pyrr
 import numpy as np
 from obstacle import ObstacleGL
-import glutils
+import glutils,time
 from random import randint
 from mesh import Mesh
 from cpe3d import Object3D, Camera, Transformation3D, Text
@@ -34,7 +34,6 @@ class ViewerGL:
         print(f"OpenGL: {GL.glGetString(GL.GL_VERSION).decode('ascii')}")
 
 
-
         self.objs = []
         self.touch = {}
         self.vitesse = 0
@@ -55,7 +54,6 @@ class ViewerGL:
             o = Text('Perdu !!!', np.array([-0.8, 0.3], np.float32), np.array([0.8, 0.8], np.float32), vao, 2, programGUI_id, texture)
             ViewerGL.add_object(self,o)"""
     def run(self):
-        
         program3d_id = glutils.create_program_from_file('shader.vert', 'shader.frag')
 
         # boucle d'affichage
@@ -73,6 +71,7 @@ class ViewerGL:
                         self.update_camera(obj.program)
                     if isinstance(obj, ObstacleGL) and self.vie == 1:
                         obj.mvmt_obstacle()
+                        obj.points()
                         collision = obj.collision(self.objs[0])
                         if collision == True:
                             self.collision()
@@ -80,6 +79,7 @@ class ViewerGL:
                             self.objs[1].transformation.translation[0] = self.objs[0].transformation.translation[0]
                             self.objs[1].transformation.translation[2] = self.objs[0].transformation.translation[2]
                             self.vie = 0
+                            
                     obj.draw()
 
             # changement de buffer d'affichage pour éviter un effet de scintillement

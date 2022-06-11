@@ -6,7 +6,7 @@ from mesh import Mesh
 from cpe3d import Object3D, Camera, Transformation3D, Text
 import numpy as np
 import OpenGL.GL as GL
-import pyrr
+import pyrr,time
 
 def main():
     viewer = ViewerGL()
@@ -18,7 +18,6 @@ def main():
     program3d_id = glutils.create_program_from_file('shader.vert', 'shader.frag')
     programGUI_id = glutils.create_program_from_file('gui.vert', 'gui.frag')
 
-    
      
 
 # PERSONNAGE --------------------------------------------------

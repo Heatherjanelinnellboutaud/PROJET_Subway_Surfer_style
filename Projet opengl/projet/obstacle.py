@@ -12,13 +12,14 @@ import glutils
 class ObstacleGL:
     def __init__(self):
 
-       self.lst_obj = []
-       self.numero_objet = 0
-       self.vitesse = 0.2
-       self.program = 0
+        self.lst_obj = []
+        self.numero_objet = 0
+        self.vitesse = 0.2
+        self.program = 0
 
-       self.verrou = [None,time.time()]
-       self.time_reset = 2
+        self.verrou = [None,time.time()]
+        self.time_reset = 2
+        self.tmp_init = time.time()
 
     def add_object(self, obj):
         self.lst_obj.append(obj)
@@ -46,7 +47,7 @@ class ObstacleGL:
     def aleatoire(self,obj):
         colonne = randint(-1,1)
         while colonne == self.verrou[0] and self.verrou[1] - time.time()<self.time_reset:#temps que la colonne générée est occupée dans la ligne, on régénère une colonne
-                    colonne = randint(-1,1)
+            colonne = randint(-1,1)
         self.verrou[0] = colonne
         self.verrou[1] = time.time()
         obj.transformation.translation[0] = 1.6*colonne
@@ -77,7 +78,17 @@ class ObstacleGL:
         texture = glutils.load_texture('fontB.jpg')
         o = Text('Perdu', np.array([-0.05, -0.05], np.float32), np.array([0.05, 0.05], np.float32), vao, 2, programGUI_id, texture)
         o.draw()
-        
+
+    def points(self):
+        tmp = time.time() - self.tmp_init 
+        print(tmp)
+        programGUI_id = glutils.create_program_from_file('gui.vert', 'gui.frag')
+        vao = Text.initalize_geometry()
+        texture = glutils.load_texture('fontB.jpg')
+        o = Text(str(round(tmp,1)), np.array([-0.05, -0.05], np.float32), np.array([0.05, 0.05], np.float32), vao, 2, programGUI_id, texture)
+        o.draw()
+
+
     def draw(self):
         for o in self.lst_obj:
             o.draw()
