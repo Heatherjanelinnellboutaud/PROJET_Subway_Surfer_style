@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+from tkinter import LEFT, RIGHT
 import OpenGL.GL as GL
 import glfw
 import pyrr
@@ -9,6 +10,7 @@ import glutils,time
 from random import randint
 from mesh import Mesh
 from cpe3d import Object3D, Camera, Transformation3D, Text
+import mouse
 
 class ViewerGL:
     def __init__(self):
@@ -42,6 +44,7 @@ class ViewerGL:
         self.vie = 1
         self.mvmt_gauche = False
         self.mvmt_droite = False
+        self.game_on = False
         
         self.pos = 0
         self.pos_init = 0
@@ -72,7 +75,7 @@ class ViewerGL:
                     GL.glUseProgram(obj.program)
                     if isinstance(obj, Object3D):
                         self.update_camera(obj.program)
-                    if isinstance(obj, ObstacleGL) and self.vie == 1:
+                    if isinstance(obj, ObstacleGL) and self.vie == 1 and self.game_on == True:
                         obj.mvmt_obstacle()
                         collision = obj.collision(self.objs[0])
                         if collision == True:
@@ -141,7 +144,8 @@ class ViewerGL:
                     self.objs[0].transformation.translation[0] = round(d,1)
                     self.vad = 1
                 self.vad = 0"""
-        self.touch[key] = action
+        if self.game_on == True:
+            self.touch[key] = action
                 
     def add_object(self, obj):
         self.objs.append(obj)
@@ -189,18 +193,24 @@ class ViewerGL:
         self.cam.transformation.rotation_euler[pyrr.euler.index().yaw] += np.pi
         self.cam.transformation.rotation_center = self.objs[0].transformation.translation + self.objs[0].transformation.rotation_center
         self.cam.transformation.translation = self.objs[0].transformation.translation + pyrr.Vector3([0, 1, 5])
-            
-# SAUT --------------------------------------------------------
-        if glfw.KEY_SPACE in self.touch and self.flag == 1:
-                self.saut_montee()
-        if glfw.KEY_SPACE in self.touch and self.flag == 0:
-            self.saut_descente()
-# Gauche --------------------------------------------------------
-        if glfw.KEY_LEFT in self.touch and self.pos != -1 and self.mvmt_droite == False:
-            self.gauche()
-# Gauche --------------------------------------------------------
-        if glfw.KEY_RIGHT in self.touch and self.pos != 1 and self.mvmt_gauche == False:
-            self.droite()
+
+        if self.game_on == True:      
+    # SAUT --------------------------------------------------------
+            if glfw.KEY_SPACE in self.touch and self.flag == 1:
+                    self.saut_montee()
+            if glfw.KEY_SPACE in self.touch and self.flag == 0:
+                self.saut_descente()
+    # Gauche --------------------------------------------------------
+            if glfw.KEY_LEFT in self.touch and self.pos != -1 and self.mvmt_droite == False:
+                self.gauche()
+    # Gauche --------------------------------------------------------
+            if glfw.KEY_RIGHT in self.touch and self.pos != 1 and self.mvmt_gauche == False:
+                self.droite()
+
+        if mouse.is_pressed(LEFT): 
+            self.clic()
+        
+        
 
     def gauche(self):
         if abs(self.pos_init-self.objs[0].transformation.translation[0])<1.6:
@@ -250,3 +260,6 @@ class ViewerGL:
     def collision(self):
         self.objs[0].transformation.translation -= \
             pyrr.matrix33.apply_to_vector(pyrr.matrix33.create_from_eulers(self.objs[0].transformation.rotation_euler), pyrr.Vector3([0, 0, 0.2]))
+
+    def clic(self):
+        self.game_on = True

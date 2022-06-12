@@ -46,7 +46,7 @@ def main():
 # PALMIERS ---------------------------------------------------------
     nbr_ligne_obstacle = 0
     obstacle = ObstacleGL()
-    for i in range(5):
+    for i in range(1):
         nombre_obj_ligne = 0
         colonne = []
         double = randint(0,2)#une chance sur trois de mettre 2 palmiers sur une ligne
@@ -85,7 +85,7 @@ def main():
             if colonne_caillou not in colonne:
                 c = Mesh.load_obj('rocher.obj')    
                 c.normalize()
-                c.apply_matrix(pyrr.matrix44.create_from_scale([1, 1, 1, 1]))
+                c.apply_matrix(pyrr.matrix44.create_from_scale([0.75, 0.75, 0.75, 1]))
                 tr = Transformation3D()
                 tr.translation.x = 1.5*colonne_caillou
                 tr.translation.y = -np.amin(c.vertices, axis=0)[1]
