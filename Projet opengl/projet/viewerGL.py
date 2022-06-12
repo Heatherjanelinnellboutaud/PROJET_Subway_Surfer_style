@@ -24,6 +24,8 @@ class ViewerGL:
         # création et paramétrage de la fenêtre
         glfw.window_hint(glfw.RESIZABLE, False)
         self.window = glfw.create_window(800, 800, 'OpenGL', None, None)
+        glfw.set_window_pos(self.window,100,100)
+        self.position_fenetre = glfw.get_window_pos(self.window)
         # paramétrage de la fonction de gestion des évènements
         glfw.set_key_callback(self.window, self.key_callback)
         # activation du context OpenGL pour la fenêtre
@@ -203,13 +205,15 @@ class ViewerGL:
     # Gauche --------------------------------------------------------
             if glfw.KEY_LEFT in self.touch and self.pos != -1 and self.mvmt_droite == False:
                 self.gauche()
-    # Gauche --------------------------------------------------------
+    # Droite --------------------------------------------------------
             if glfw.KEY_RIGHT in self.touch and self.pos != 1 and self.mvmt_gauche == False:
                 self.droite()
-
+    # Clic sur play pour démarrer le jeu -------------------------
         if mouse.is_pressed(LEFT): 
-            self.clic()
-        
+            position_souris = mouse.get_position()
+            if 750 <= position_souris[0] <= 900 and 100 <= position_souris[1] <= 130:
+                self.clic()
+#  bas gauche (750,130)  haut droite (900,100)
         
 
     def gauche(self):
