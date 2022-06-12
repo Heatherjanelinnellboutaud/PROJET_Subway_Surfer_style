@@ -113,39 +113,6 @@ class ViewerGL:
         if key == glfw.KEY_ESCAPE and action == glfw.PRESS:
             glfw.set_window_should_close(win, glfw.TRUE)
 
-        """# GAUCHE
-        if key == glfw.KEY_LEFT and action == glfw.PRESS and self.vad == 0:
-            if self.objs[0].transformation.translation[0] < 0:
-                while self.objs[0].transformation.translation[0] < 0:
-                    d = self.objs[0].transformation.translation[0] 
-                    d += 0.1
-                    self.objs[0].transformation.translation[0] = round(d,1)
-                    self.vag = 1
-                self.vag = 0
-            elif self.objs[0].transformation.translation[0] < 1.5 and self.objs[0].transformation.translation[0] >= 0:
-                while self.objs[0].transformation.translation[0] < 1.5:
-                    d = self.objs[0].transformation.translation[0] 
-                    d += 0.1
-                    self.objs[0].transformation.translation[0] = round(d,1)
-                    self.vag = 1
-                self.vag = 0
-
-        # DROITE
-        if key == glfw.KEY_RIGHT and action == glfw.PRESS and self.vag == 0:
-            if self.objs[0].transformation.translation[0] > 0:
-                while self.objs[0].transformation.translation[0] > 0:
-                    d = self.objs[0].transformation.translation[0] 
-                    d -= 0.1
-                    self.objs[0].transformation.translation[0] = round(d,1)
-                    self.vad = 1
-                self.vad = 0
-            elif self.objs[0].transformation.translation[0] > -1.5 and self.objs[0].transformation.translation[0] <= 0:
-                while self.objs[0].transformation.translation[0] > -1.5:
-                    d = self.objs[0].transformation.translation[0] 
-                    d -= 0.1
-                    self.objs[0].transformation.translation[0] = round(d,1)
-                    self.vad = 1
-                self.vad = 0"""
         if self.game_on == True:
             self.touch[key] = action
                 
@@ -154,8 +121,6 @@ class ViewerGL:
 
     def set_camera(self, cam):
         self.cam = cam
-
-    
 
     def update_camera(self, prog):
         

@@ -18,8 +18,6 @@ def main():
     program3d_id = glutils.create_program_from_file('shader.vert', 'shader.frag')
     programGUI_id = glutils.create_program_from_file('gui.vert', 'gui.frag')
 
-     
-
 # PERSONNAGE --------------------------------------------------
     m = Mesh.load_obj('poisson.obj')
     m.normalize()
@@ -64,7 +62,6 @@ def main():
                     colonne.append(deuxieme_colonne)
                     superposition = False
 
-        
         for palmier in range(nbr_palm_ligne):
             p = Mesh.load_obj('palmier.obj')    
             p.normalize()
@@ -97,9 +94,7 @@ def main():
                 nombre_obj_ligne += 1
                 
         nbr_ligne_obstacle += 1
-
     viewer.add_object(obstacle)
-
 
     m = Mesh()
     p0, p1, p2, p3 = [-25, 0, -30], [25, 0, -30], [25, 0, 25], [-25, 0, 25]

@@ -8,7 +8,6 @@ import time
 from random import randint
 import glutils
 
-
 class ObstacleGL:
     def __init__(self):
 
@@ -28,16 +27,6 @@ class ObstacleGL:
         self.lst_obj.append(obj)
         self.program = obj.program
 
-        """if type == "p":
-            self.lst_obj.append(obj)
-            self.lst_palmier.append(obj)
-            self.program = obj.program
-        if type == "c":
-            self.lst_obj.append(obj)
-            self.lst_caillou.append(obj)
-            self.program = obj.program"""
-
-
     def mvmt_obstacle(self):
         if self.init_time == False:
             self.points()
@@ -52,8 +41,6 @@ class ObstacleGL:
                 if self.init_time == True:
                     self.tmp = time.time()
                     self.init_time = False
-
-                
 
     def aleatoire(self,obj):
         colonne = randint(-1,1)
@@ -81,7 +68,6 @@ class ObstacleGL:
                 if distance <= 1 :
                     return True
     
-
     def points(self):
         tmp = time.time() - self.tmp 
         programGUI_id = glutils.create_program_from_file('gui.vert', 'gui.frag')
@@ -89,7 +75,6 @@ class ObstacleGL:
         texture = glutils.load_texture('fontB.jpg')
         o = Text(str(round(tmp,1)), np.array([-0.05, -0.05], np.float32), np.array([0.05, 0.05], np.float32), vao, 2, programGUI_id, texture)
         o.draw()
-
 
     def draw(self):
         for o in self.lst_obj:
