@@ -54,15 +54,7 @@ class ViewerGL:
         self.vad = 0 # va a droite
         self.vag = 0 # va a gauche
 
-    """def perte(self):
-            programGUI_id = glutils.create_program_from_file('gui.vert', 'gui.frag')
-            vao = Text.initalize_geometry()
-            texture = glutils.load_texture('fontB.jpg')
-            o = Text('Perdu !!!', np.array([-0.8, 0.3], np.float32), np.array([0.8, 0.8], np.float32), vao, 2, programGUI_id, texture)
-            ViewerGL.add_object(self,o)"""
     def run(self):
-        program3d_id = glutils.create_program_from_file('shader.vert', 'shader.frag')
-
         # boucle d'affichage
         while not glfw.window_should_close(self.window):
             # nettoyage de la fenêtre : fond et profondeur
@@ -86,9 +78,7 @@ class ViewerGL:
                             self.objs[1].transformation.translation[0] = self.objs[0].transformation.translation[0]
                             self.objs[1].transformation.translation[2] = self.objs[0].transformation.translation[2]
                             self.objs.pop(-1)
-                            self.vie = 0
-                            
-                            
+                            self.vie = 0                      
                     obj.draw()
 
             # changement de buffer d'affichage pour éviter un effet de scintillement
@@ -178,9 +168,8 @@ class ViewerGL:
             position_souris = mouse.get_position()
             if 750 <= position_souris[0] <= 900 and 100 <= position_souris[1] <= 130:
                 self.clic()
-#  bas gauche (750,130)  haut droite (900,100)
+# PLAY : bas gauche (750,130)  haut droite (900,100)
         
-
     def gauche(self):
         if abs(self.pos_init-self.objs[0].transformation.translation[0])<1.6:
             self.mvmt_gauche = True
