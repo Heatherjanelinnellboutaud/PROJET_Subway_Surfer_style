@@ -44,7 +44,7 @@ def main():
 # PALMIERS ---------------------------------------------------------
     nbr_ligne_obstacle = 0
     obstacle = ObstacleGL()
-    for i in range(1):
+    for i in range(5):
         nombre_obj_ligne = 0
         colonne = []
         double = randint(0,2)#une chance sur trois de mettre 2 palmiers sur une ligne
